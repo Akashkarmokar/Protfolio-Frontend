@@ -11,7 +11,6 @@ module.exports = {
   plugins: ['react-refresh'],
   rules: {
     'react-refresh/only-export-components': 'warn',
-    'eslint-disable-next-line react/prop-types': false,
-    'eslint-disable-next-line react/prop-types': false,
+    'eslint-disable-next-line react/prop-types': 0
   },
 }
