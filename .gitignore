@@ -25,4 +25,4 @@ dist-ssr
 
 
 # Project needed 
-.gitignore
+.package-lock.json
