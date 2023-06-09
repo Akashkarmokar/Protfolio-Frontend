@@ -13,7 +13,7 @@ const Home = ()=>{
             <div className="main-container flex justify-start items-start mb-5 rounded-md">
                 {/* Total Counters */}
                 <div className="flex flex-col bg-[#171717] px-2 rounded-md min-w-[15%] max-h-min">
-                    <div className=" mx-1 my-2 px-2 rounded-sm hover:bg-[#242424]">Blogs ( 5 )</div>
+                    <div className=" mx-1 my-2 px-2 rounded-md hover:bg-[#242424]">Blogs ( 5 )</div>
                     <div className=" mx-1 my-2 px-2 rounded-md hover:bg-[#242424]">Up Comming ( 5 )</div>
                     <div className=" mx-1 my-2 px-2 rounded-md hover:bg-[#242424]">Skill ( 5 )</div>
                     <div className=" mx-1 my-2 px-2 rounded-md hover:bg-[#242424]">Feedbacks ( 5 )</div>

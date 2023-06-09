@@ -2,6 +2,8 @@ import './index.css'
 import {Routes,Route} from 'react-router-dom'
 import { Home,About,Dashboard,Miscellaneous,Projects,Signin,Signup,NotFound, BlogDetails} from './Pages'
 import { Navbar,PrivateOutlet,PrivateOutletRestriction } from './Components'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const App = ()=> {
@@ -27,6 +29,7 @@ const App = ()=> {
           {/* Not Found Route */}
           <Route path='*' element={<NotFound/>} />
         </Routes>
+        <ToastContainer/>
       </div>
     </>)
 }
