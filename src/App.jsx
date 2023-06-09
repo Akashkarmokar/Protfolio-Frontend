@@ -1,4 +1,4 @@
-import './App.css'
+import './index.css'
 import {Routes,Route} from 'react-router-dom'
 import { Home,About,Dashboard,Miscellaneous,Projects,Signin,Signup,NotFound, BlogDetails} from './Pages'
 import { Navbar,PrivateOutlet,PrivateOutletRestriction } from './Components'
