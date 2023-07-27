@@ -13,7 +13,7 @@ const About = ()=>{
                         <img src="../../src/assets/image/profile.jpg" alt="profile" className='h-60 mx-auto rounded-full ring-4 ring-[#ffffff]'/>
                     </div>
                     <div className='flex flex-col justify-item-stretch'>
-                        <p>as <span className='font-bold text-3xl'>Akash Karmokar</span></p>
+                        <p><span className='text-[#00DF9A]'> as </span><span className='font-bold text-3xl'>Akash Karmokar</span></p>
                         <p>{designation} @ {organizationName}</p>
                         <div className='flex flex-row gap-3 justify-center mt-2 md:justify-start'>
                             <NavLink to={"https://www.linkedin.com/in/akashcsemu/"} target='_blank'><FaLinkedin className='text-xl'/></NavLink>
