@@ -1,7 +1,7 @@
 const Blog = ()=>{
     return (
         <>    
-            <div className="bg-[#171717] my-1 p-1 rounded-md">
+            <div className="bg-[#171717] mx-2 my-2 p-1 rounded-md">
                 {/* If banner have then render it or null */}
                 {/* <div>Banner</div> */}
                 <p className="text-2xl mx-4">How to setup your pc to manage multiple Git account</p>
