@@ -1,8 +1,21 @@
 import { useState } from 'react'
 import { makeToast } from '../Helpers';
+import { useQuery, useMutation } from '@apollo/client'
+import { GET_USERS } from '../GraphQL/Querys'
+import { SIGN_IN } from '../GraphQL/Mutations'
+
+
 const Signin = ()=>{
     const [userEmail,setUserEmail] = useState('');
     const [userPassword,setUserPassword]  = useState('')
+
+    
+    const { error, loading, data } = useQuery(GET_USERS)
+    console.log({ error })
+    console.log({ loading })
+    console.log({ data })
+
+    const [ Make_Users_SIGN_IN, { SIGN_IN_ERROR }]  = useMutation(SIGN_IN)
 
     const signInHandler = async () => {
         const checkUserEmail = (userTypeEmail) =>{
@@ -11,7 +24,7 @@ const Signin = ()=>{
         }
 
         const checkUserPassword = (userTypedPassword) => {
-            return userTypedPassword.length >= 8 
+            return userTypedPassword.length >= 3 
         }
         const isEmailValid = checkUserEmail(userEmail);
         const isPasswordValid = checkUserPassword(userPassword);
@@ -22,8 +35,18 @@ const Signin = ()=>{
         if(!isPasswordValid) {
             makeToast("Password is not valid")
         }
+        Make_Users_SIGN_IN({
+            variables:{
+                inputData: {
+                    "email": "aka@.com",
+                    "password": "hello"
+                }
+            }
+        })
+        if (SIGN_IN_ERROR){
+            makeToast("Sign in error")
+        }
         
-
     }
 
     return (
