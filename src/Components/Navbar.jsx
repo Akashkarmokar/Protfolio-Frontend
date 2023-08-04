@@ -9,7 +9,7 @@ const Navbar = ()=>{
             <div className="main-container my-2">
                 <div className="flex justify-between">
                     <div className="ml-5">
-                        <h1 className="text-2xl">[ Ak ]</h1>
+                        <h1 className="text-2xl" title="As known">[ Ak ]</h1>
                     </div>
                     <div className="mr-5 flex">
                         {/* <div className="flex flex-col">
