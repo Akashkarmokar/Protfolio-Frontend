@@ -12,13 +12,13 @@ const Navbar = ()=>{
                         <h1 className="text-2xl">[ Ak ]</h1>
                     </div>
                     <div className="mr-5 flex">
-                        <div className="flex flex-col">
+                        {/* <div className="flex flex-col">
                             <NavLink to="/" className="mx-1 my-0">Home</NavLink>
                             { pathname === '/'? <h1 className="text-center text-[#00DF9A]">^</h1> : null}
-                        </div>
+                        </div> */}
                         <div className="flex flex-col">
-                            <NavLink to="/about" className="mx-1">About</NavLink>
-                            { pathname === '/about' ? <h1 className="text-center text-[#00DF9A]">^</h1>: null }
+                            <NavLink to="/" className="mx-1">Home</NavLink>
+                            { pathname === '/' ? <h1 className="text-center text-[#00DF9A]">^</h1>: null }
                         </div>
                         {
                             isLoggedIn === true ? <div className="flex flex-col">
