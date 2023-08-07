@@ -38,18 +38,18 @@ const App = ()=> {
             <Routes>
               {/* <Route path='/' element={<Home/>} /> */}
               <Route path='/' element={<About/>} />
-              <Route path='/miscellaneous' element={<Miscellaneous/>} />
+              {/* <Route path='/miscellaneous' element={<Miscellaneous/>} />
               <Route path='/projects' element={<Projects/>} />
-              <Route path='/blog/:id' element={<BlogDetails/>}/>
+              <Route path='/blog/:id' element={<BlogDetails/>}/> */}
 
               {/* Private Routes */}
-              <Route path='/*' element={<PrivateOutlet/>} >
+              {/* <Route path='/*' element={<PrivateOutlet/>} >
                 <Route path='dashboard' element={<Dashboard/>}/>
-              </Route>
+              </Route> */}
 
               {/* Restricted Route for LoggedIn user */}
-              <Route path='/signin' element={<PrivateOutletRestriction><Signin/></PrivateOutletRestriction>}/>
-              <Route path='/signup' element={<PrivateOutletRestriction><Signup/></PrivateOutletRestriction>}/>
+              {/* <Route path='/signin' element={<PrivateOutletRestriction><Signin/></PrivateOutletRestriction>}/>
+              <Route path='/signup' element={<PrivateOutletRestriction><Signup/></PrivateOutletRestriction>}/> */}
 
               {/* Not Found Route */}
               <Route path='*' element={<NotFound/>} />
