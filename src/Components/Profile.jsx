@@ -4,6 +4,15 @@ import { FaLinkedin, FaGithub, FaYoutube} from 'react-icons/fa6'
 import { PiDevToLogoLight } from 'react-icons/pi'
 import ProfileSrc from '../assets/image/profile.jpg'
 
+
+const downloadResumeFile = (event)=>{
+    const aTag = document.createElement('a');
+    aTag.href = '../assets/pdf/Resume_Akash_karmokar.pdf'
+    aTag.setAttribute('download','Resume_Akash_karmokar.pdf')
+    aTag.click();
+    aTag.remove();
+}
+
 const Profile = ()=>{
     const [designation, setDesignatioin] = useState('Software Engineer')
     const [organizationName, setOrganizationName]  = useState('Gain Solutions')
@@ -13,9 +22,9 @@ const Profile = ()=>{
                         <img src={ProfileSrc} alt="profile" className='h-60 mx-auto rounded-full ring-4 ring-[#ffffff]'/>
                     </div>
                     <div className='flex flex-col justify-item-stretch'>
-                        <p><span className='text-[#00DF9A]'> as </span><span className='font-bold text-3xl'>Akash Karmokar</span></p>
-                        <p>{designation} @ {organizationName}.</p>
-                        <div className=''>
+                        <p className='text-center md:text-left'><span className='text-[#00DF9A]'> as </span><span className='font-bold text-3xl'>Akash Karmokar</span></p>
+                        <p className='text-center md:text-left'>{designation} @ {organizationName}.</p>
+                        <div className='text-center md:text-left'>
                             <p>Who likes to work on backend technologies.</p>
                         </div>
                         <div className='flex flex-row gap-3 justify-center mt-2 md:justify-start'>
@@ -24,8 +33,8 @@ const Profile = ()=>{
                             <NavLink to={"https://dev.to/akashcsemu"} target='_blank'><PiDevToLogoLight className='text-xl'/></NavLink>
                             <NavLink to={"https://www.youtube.com/@OpenTerminal108"} target='_blank'><FaYoutube className='text-xl'/></NavLink>
                         </div>
-                        <div className='my-2'>
-                            <button className='p-1 border border-[#00DF9A]  rounded-md'>Resume</button>
+                        <div className='my-2 flex flex-row gap-3 justify-center mt-2 md:justify-start'>
+                            <button onClick={downloadResumeFile} className='p-1 border border-[#00DF9A]  rounded-md'>Resume</button>
                         </div>
                     </div>
                 </div>
