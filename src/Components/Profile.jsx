@@ -4,6 +4,15 @@ import { FaLinkedin, FaGithub, FaYoutube} from 'react-icons/fa6'
 import { PiDevToLogoLight } from 'react-icons/pi'
 import ProfileSrc from '../assets/image/profile.jpg'
 
+
+const downloadResumeFile = (event)=>{
+    const aTag = document.createElement('a');
+    aTag.href = '../assets/pdf/Resume_Akash_karmokar.pdf'
+    aTag.setAttribute('download','Resume_Akash_karmokar.pdf')
+    aTag.click();
+    aTag.remove();
+}
+
 const Profile = ()=>{
     const [designation, setDesignatioin] = useState('Software Engineer')
     const [organizationName, setOrganizationName]  = useState('Gain Solutions')
@@ -25,7 +34,7 @@ const Profile = ()=>{
                             <NavLink to={"https://www.youtube.com/@OpenTerminal108"} target='_blank'><FaYoutube className='text-xl'/></NavLink>
                         </div>
                         <div className='my-2 flex flex-row gap-3 justify-center mt-2 md:justify-start'>
-                            <button className='p-1 border border-[#00DF9A]  rounded-md'>Resume</button>
+                            <button onClick={downloadResumeFile} className='p-1 border border-[#00DF9A]  rounded-md'>Resume</button>
                         </div>
                     </div>
                 </div>
