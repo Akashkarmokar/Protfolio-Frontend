@@ -1,9 +1,11 @@
-import { Blog, Counter, Profile,Skills } from '../Components'
+// import { Blog, Counter, Profile,Skills, Terminal } from '../Components'
+import {Profile, Terminal } from '../Components'
 
 const About = ()=>{
     return (
-            <div className='main-container flex justify-center items-center md:h-screen'>
+            <div className='main-container md:h-screen flex flex-col items-center justify-center'>
                 <Profile/>
+                <Terminal/>
                 {/* <div className='flex flex-col md:flex-row md:items-start  md:justify-center gap-5'>
                     <div className='md:w-[30%] flex flex-col'>
                         <Counter/>
