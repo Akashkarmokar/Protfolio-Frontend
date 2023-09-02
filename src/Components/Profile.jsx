@@ -18,8 +18,8 @@ const Profile = ()=>{
     const [organizationName, setOrganizationName]  = useState('Gain Solutions')
     return (
         <div className='flex flex-col gap-y-5 md:flex-row items-center justify-center gap-x-20 my-10'>
-                    <div>
-                        <img src={ProfileSrc} alt="profile" className='h-60 mx-auto rounded-full ring-4 ring-[#ffffff]'/>
+                    <div className='h-60 w-60 mx-auto rounded-full overflow-hidden ring-4 ring-[#ffffff]'>
+                        <img src={ProfileSrc} loading='lazy' alt="profile"  className='object-cover w-full  '/>
                     </div>
                     <div className='flex flex-col justify-item-stretch'>
                         <p className='text-center md:text-left'><span className='text-[#00DF9A]'> as </span><span className='font-bold text-3xl'>Akash Karmokar</span></p>
