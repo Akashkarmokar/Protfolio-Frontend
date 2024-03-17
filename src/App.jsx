@@ -1,38 +1,50 @@
 import './index.css'
 import {Routes,Route} from 'react-router-dom'
-import { Home,About,Dashboard,Miscellaneous,Projects,Signin,Signup,NotFound, BlogDetails} from './Pages'
+import { About,Dashboard,Signin,Signup,NotFound} from './Pages'
 import { Navbar,PrivateOutlet,PrivateOutletRestriction } from './Components'
+import { AuthContext } from './Context'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
-import { ApolloClient, InMemoryCache, ApolloProvider, HttpLink, from} from '@apollo/client'
-import { onError } from '@apollo/client/link/error'
-import { makeToast } from './Helpers'
-
-const errorLink = onError((graphQLErrors, networkError)=>{
-  if (graphQLErrors){
-    graphQLErrors.forEach((message,location,path) => {
-      makeToast(message)
-    });
-  }
-});
+import { useState, useEffect } from 'react'
+import Cookies from 'js-cookie'
+import { jwtDecode } from 'jwt-decode'
+import { callApi } from './Helpers'
 
 
-const link = from([
-  errorLink,
-  new HttpLink({uri: `http://localhost:3000/`})
-])
-
-
-const client = new ApolloClient({
-  cache: new InMemoryCache(),
-  link: link
-})
 
 const App = ()=> {
 
+    const [ isLooggedIn, setIsLooggedIn ] = useState(false)
+    const [ userDetails, setUserDetails ] = useState(null)
+    
+    useEffect(()=> {
+      const token = Cookies.get('token')
+      
+      if (token){
+        const CheckToken = async ()=> {
+          const RequestBody = {
+            token: token
+          }
+          const data = await callApi('post','auth/check-token',RequestBody)
+          if(data==true) {
+            const UserDetails = jwtDecode(token)
+            setIsLooggedIn(true);
+            setUserDetails(UserDetails)
+          }
+          
+        }
+        
+        CheckToken();
+      }
+    },[isLooggedIn])
+    const AuthDetails = {
+      isUserLoggedIn : isLooggedIn,
+      setUserLoggedIn: setIsLooggedIn,
+      userDetails: userDetails,
+      setUserDetails: setUserDetails
+    }
     return (
-      <ApolloProvider client={client}>
-        <>
+        <AuthContext.Provider value = {AuthDetails}>
           <div>
             <Navbar/>
             <Routes>
@@ -43,21 +55,21 @@ const App = ()=> {
               <Route path='/blog/:id' element={<BlogDetails/>}/> */}
 
               {/* Private Routes */}
-              {/* <Route path='/*' element={<PrivateOutlet/>} >
+              <Route path='/*' element={<PrivateOutlet/>} >
                 <Route path='dashboard' element={<Dashboard/>}/>
-              </Route> */}
+              </Route>
 
               {/* Restricted Route for LoggedIn user */}
-              {/* <Route path='/signin' element={<PrivateOutletRestriction><Signin/></PrivateOutletRestriction>}/>
-              <Route path='/signup' element={<PrivateOutletRestriction><Signup/></PrivateOutletRestriction>}/> */}
+              <Route path='/signin' element={<PrivateOutletRestriction><Signin/></PrivateOutletRestriction>}/>
+              <Route path='/signup' element={<PrivateOutletRestriction><Signup/></PrivateOutletRestriction>}/>
 
               {/* Not Found Route */}
               <Route path='*' element={<NotFound/>} />
             </Routes>
             <ToastContainer/>
           </div>
-        </>
-      </ApolloProvider>
+        </AuthContext.Provider>
+      
     )
 }
 

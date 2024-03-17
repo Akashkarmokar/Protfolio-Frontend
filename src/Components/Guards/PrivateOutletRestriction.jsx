@@ -3,8 +3,7 @@ import { useAuth } from '../../Hooks'
 
 const PrivateOutletRestriction = ({children})=>{
     const authDetails = useAuth();
-    const location = useLocation();
-    return authDetails.isLoggedIn === false ? children : <Navigate to="/"/>
+    return authDetails.isUserLoggedIn === false ? children : <Navigate to="/"/>
 }
 
 export default PrivateOutletRestriction;
