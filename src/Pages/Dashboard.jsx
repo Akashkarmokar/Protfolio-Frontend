@@ -20,13 +20,15 @@ const Dashboard = () => {
     (async ()=> {
       try {
         const bio_data = await callApi('get','bio/info')
-        setBioInformation(()=> ({
-          ...bioInformation,
-          name: bio_data.name,
-          note: bio_data.note,
-          image_url: bio_data.image_key
-        }))
-      }catch(err){
+        if (bio_data) {
+          setBioInformation(()=> ({
+            ...bioInformation,
+            name: bio_data.name,
+            note: bio_data.note,
+            image_url: bio_data.image_key
+          }))
+        }
+      } catch(err) {
         console.log(err)
       }
     })()

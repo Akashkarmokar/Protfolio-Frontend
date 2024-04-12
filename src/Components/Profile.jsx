@@ -28,13 +28,15 @@ const Profile = ()=>{
         (async()=> {
             try {
                 const biodata = await callApi('get','bio/info')
-                setBioInfo(()=> ({
-                    ...bio_info,
-                    id: biodata.id,
-                    name: biodata.name,
-                    note: biodata.note,
-                    image_key: biodata.image_key
-                }))
+                if (biodata) {
+                    setBioInfo(()=> ({
+                        ...bio_info,
+                        id: biodata.id,
+                        name: biodata.name,
+                        note: biodata.note,
+                        image_key: biodata.image_key
+                    }))
+                }
             }catch(err){
                 console.log("Err: ", err)
             }
