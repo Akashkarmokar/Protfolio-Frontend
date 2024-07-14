@@ -7,6 +7,8 @@ const Navbar = ()=>{
     const { pathname } = useLocation();
     const { isUserLoggedIn,setIsLooggedIn,setUserDetails  } = useAuth()
 
+    const AppMode = import.meta.env.VITE_REACT_APP_MODE || 'development'
+
     const HandleLogoutAction = ()=> {
         Cookies.remove('token')
         setIsLooggedIn(false)
@@ -41,12 +43,12 @@ const Navbar = ()=>{
                                 <NavLink to="/" className="mx-1" onClick={HandleLogoutAction}>Logout</NavLink>
                             </div> : null
                         }
-                        { isUserLoggedIn === false ? 
+                        { AppMode === 'development' && isUserLoggedIn === false ? 
                             <div className="flex flex-col">
                                 <NavLink to="/signin" className="mx-1">Signin</NavLink>
                             </div> : null
                         }
-                        { isUserLoggedIn === false ? 
+                        { AppMode === 'development' && isUserLoggedIn === false ? 
                             <div className="flex flex-col">
                                 <NavLink to="/signup" className="mx-1">Signup</NavLink>
                             </div> : null

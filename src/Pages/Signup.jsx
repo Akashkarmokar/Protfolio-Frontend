@@ -3,10 +3,15 @@ import { makeToast } from '../Helpers';
 // import { callApi } from '../Helpers/apiCall'
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import { useNavigate } from 'react-router-dom'
 
 const Signup = ()=>{
     const [userEmail,setUserEmail] = useState('');
     const [userPassword,setUserPassword]  = useState('')
+
+
+    const Navigate = useNavigate()
+
 
     const signUpHandler = async () => {
         const checkUserEmail = (userTypeEmail) =>{
@@ -48,8 +53,9 @@ const Signup = ()=>{
                 const { data } = Response
                 const { access_token }  = data
                 Cookies.set('Token', access_token)
+                Navigate('/signin')
+                makeToast("Signup Successfully :)")
             } else {
-                console.log("Something wrong with API Call")
                 makeToast("Something went wrong !!")
             }
         }catch(err){

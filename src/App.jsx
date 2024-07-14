@@ -61,7 +61,7 @@ const App = ()=> {
 
               {/* Restricted Route for LoggedIn user */}
               <Route path='/signin' element={<PrivateOutletRestriction><Signin/></PrivateOutletRestriction>}/>
-              <Route path='/signup' element={<PrivateOutletRestriction><Signup/></PrivateOutletRestriction>}/>
+              {<Route path='/signup' element={<PrivateOutletRestriction><Signup/></PrivateOutletRestriction>}/>}
 
               {/* Not Found Route */}
               <Route path='*' element={<NotFound/>} />
