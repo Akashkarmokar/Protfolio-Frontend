@@ -13,6 +13,7 @@ const downloadResumeFile = (event)=>{
     aTag.remove();
 }
 
+
 const Profile = ()=>{
     const [designation, setDesignatioin] = useState('Software Engineer')
     const [organizationName, setOrganizationName]  = useState('YO TECH')
