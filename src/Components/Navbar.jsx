@@ -44,12 +44,16 @@ const Navbar = ()=>{
                                 <NavLink to="/" className="mx-1" onClick={HandleLogoutAction}>Logout</NavLink>
                             </div> : null
                         }
-                        { AppMode === 'development' && isUserLoggedIn === false ? 
+                        { 
+                            AppMode === 'development' && 
+                            isUserLoggedIn === false ? 
                             <div className="flex flex-col">
                                 <NavLink to="/signin" className="mx-1">Signin</NavLink>
                             </div> : null
                         }
-                        { AppMode === 'development' && isUserLoggedIn === false ? 
+                        { 
+                            AppMode === 'development' && 
+                            isUserLoggedIn === false ? 
                             <div className="flex flex-col">
                                 <NavLink to="/signup" className="mx-1">Signup</NavLink>
                             </div> : null
