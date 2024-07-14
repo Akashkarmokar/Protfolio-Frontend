@@ -5,10 +5,10 @@ import { makeToast } from "../Helpers";
 
 const Navbar = ()=>{
     const { pathname } = useLocation();
-    
+
     const { isUserLoggedIn,setIsLooggedIn,setUserDetails  } = useAuth()
 
-    const AppMode = import.meta.env.VITE_REACT_APP_MODE || 'development'
+    const AppMode = import.meta.env.VITE_REACT_APP_MODE 
 
     const HandleLogoutAction = ()=> {
         Cookies.remove('token')
