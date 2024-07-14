@@ -2,7 +2,7 @@ import axios from "axios";
 import { makeToast } from '../Helpers'
 
 const callApi = async (method, url, data)=>{
-    const BaseURI = 'http://127.0.0.1:8086/'
+    const BaseURI = import.meta.env.VITE_REACT_APP_BaseURI
     try {
         const Response = await axios({
             method: method,
