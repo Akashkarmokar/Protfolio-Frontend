@@ -14,7 +14,7 @@ import { callApi } from './Helpers'
 
 const App = ()=> {
 
-    const [ isLooggedIn, setIsLooggedIn ] = useState(false)
+    const [ isLooggedIn, setIsLooggedIn ] = useState(true)
     const [ userDetails, setUserDetails ] = useState(null)
     
     useEffect(()=> {
@@ -45,7 +45,7 @@ const App = ()=> {
     }
     return (
         <AuthContext.Provider value = {AuthDetails}>
-          <div>
+          <div className=''>
             <Navbar/>
             <Routes>
               {/* <Route path='/' element={<Home/>} /> */}

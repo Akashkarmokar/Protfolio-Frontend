@@ -1,12 +1,17 @@
+import { useState } from "react"
+import { NavLink } from "react-router-dom"
 
-const Sidebar = ()=> {
+const Sidebar = ({ props_data })=> {
+    
+    // const [ selectedMenu, setSelectedMenu ] = useState("profile")
+    const { selectedMenu, setSelectedMenu } = props_data;
     return (
-        <>
+        <div className="w-[30%]">
             <aside
-            id="logo-sidebar"
-            className="left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
-            aria-label="Sidebar"
-          >
+              id="logo-sidebar"
+              className="left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
+              aria-label="Sidebar"
+            >
             <div className="h-full px-3 py-4 overflow-y-auto bg-[#242424] dark:bg-gray-800 rounded-md border">
               <a
                 href="#"
@@ -17,8 +22,17 @@ const Sidebar = ()=> {
                 </span>
               </a>
               <ul className="space-y-2 font-medium">
-                <li>
-                  <a
+                <li 
+                  className={
+                    `${
+                        selectedMenu === 'profile'
+                          ? "bg-[#3e403f] rounded-lg"
+                          :""
+                      }`
+                  }
+                  onClick={() => setSelectedMenu("profile")}
+                >
+                  <NavLink
                     href="#"
                     className="flex items-center p-2 text-gray-900  rounded-lg text-white hover:bg-[#3e403f] dark:hover:bg-gray-700 group"
                   >
@@ -33,9 +47,17 @@ const Sidebar = ()=> {
                       <path d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z" />
                     </svg>
                     <span className="ms-3">Profile</span>
-                  </a>
+                  </NavLink>
                 </li>
-                <li>
+                <li
+                  className={
+                    `${
+                        selectedMenu === 'blogs'
+                          ? "bg-[#3e403f] rounded-lg"
+                          : ""
+                      }`
+                  }
+                  onClick={() => setSelectedMenu("blogs")}>
                   <a
                     href="#"
                     className="flex items-center p-2 text-gray-900  rounded-lg text-white hover:bg-[#3e403f] dark:hover:bg-gray-700 group"
@@ -56,7 +78,7 @@ const Sidebar = ()=> {
               </ul>
             </div>
           </aside>
-        </>
+        </div>
     )
 }
 export default Sidebar

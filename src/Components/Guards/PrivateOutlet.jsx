@@ -3,6 +3,7 @@ import { useAuth } from '../../Hooks'
 
 const PrivateOutlet = ()=>{
     const authDetails = useAuth();
+    return <Outlet />
     return authDetails.isUserLoggedIn ? <Outlet/> : <Navigate to="/signin"/>
 }
 

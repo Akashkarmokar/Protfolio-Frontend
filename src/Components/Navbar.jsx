@@ -5,7 +5,7 @@ import { makeToast } from "../Helpers";
 
 const Navbar = ()=>{
     const { pathname } = useLocation();
-
+    // console.log("Pathname: ", pathname);
     const { isUserLoggedIn,setIsLooggedIn,setUserDetails  } = useAuth()
 
     const AppMode = import.meta.env.VITE_REACT_APP_MODE 
@@ -34,10 +34,10 @@ const Navbar = ()=>{
                             { pathname === '/' ? <h1 className="text-center text-[#00DF9A]">^</h1>: null }
                         </div>
                         {
-                            isUserLoggedIn === true ? <div className="flex flex-col">
+                            <div className="flex flex-col">
                                 <NavLink to="/dashboard" className="mx-1">Dashboard</NavLink>
                                 { pathname === '/dashboard' ? <h1 className="text-center text-[#00DF9A]">^</h1> : null}
-                            </div> : null 
+                            </div>  
                         }
                         { isUserLoggedIn === true ? 
                             <div className="flex flex-col">
