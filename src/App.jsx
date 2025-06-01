@@ -1,6 +1,6 @@
 import './index.css'
 import {Routes,Route} from 'react-router-dom'
-import { About,Dashboard,Signin,Signup,NotFound} from './Pages'
+import { About,Dashboard,Signin,Signup,NotFound, Experiences} from './Pages'
 import { Navbar,PrivateOutlet,PrivateOutletRestriction } from './Components'
 import { AuthContext } from './Context'
 import { ToastContainer } from 'react-toastify'
@@ -45,11 +45,12 @@ const App = ()=> {
     }
     return (
         <AuthContext.Provider value = {AuthDetails}>
-          <div className=''>
+          <div className='main-container pb-10'>
             <Navbar/>
             <Routes>
               {/* <Route path='/' element={<Home/>} /> */}
               <Route path='/' element={<About/>} />
+              <Route path='/experiences' element={<Experiences/>} />
               {/* <Route path='/miscellaneous' element={<Miscellaneous/>} />
               <Route path='/projects' element={<Projects/>} />
               <Route path='/blog/:id' element={<BlogDetails/>}/> */}

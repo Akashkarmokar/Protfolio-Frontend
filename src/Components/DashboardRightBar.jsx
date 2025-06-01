@@ -1,5 +1,5 @@
 
-import { BlogList } from '../Components'
+import { BlogList, ProfileSetup } from '../Components'
 
 const DashboardRightBar = ({ props_data }) => {
     const { selectedMenu } = props_data;
@@ -9,7 +9,7 @@ const DashboardRightBar = ({ props_data }) => {
         {/* <h1 className='text-2xl'>Dashboard</h1>
         <p className='text-lg'>This is a placeholder for the dashboard content.</p> */}
         {
-            selectedMenu === 'profile' ? (<div>{selectedMenu}</div>) : null
+            selectedMenu === 'profile' ? (<div>{ <ProfileSetup/>}</div>) : null
         }
         {
             selectedMenu === 'blogs' ? (<div>{ <BlogList/>}</div>) : null

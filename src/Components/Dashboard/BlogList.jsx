@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Modal from '../Modal.jsx';
-
+import RichTextEditor from '../RichTextEditor/Tiptap.jsx'; // Assuming you have a rich text editor component
+import { useLocation } from "react-router-dom";
 
 const BlogList = (
     { 
@@ -24,43 +25,45 @@ const BlogList = (
     }
 ) => {
     const [ open , setOpen ] = useState(false);
+    const { pathname } = useLocation();
+    console.log("Pathname: ", pathname);
     return (
         <div className="flex-col justify-center items-start">
-            <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-bold mb-4">Blog List</h2>
-                <button
-                 className="bg-transparent text-2xl font-semibold hover:bg-[#64E09A] hover:text-[#242424] py-2 px-4 border border-[#64E09A] hover:border-transparent rounded"
-                 onClick={() => setOpen(true)}
-                > Create Blog 
-                </button>
+            {
+                pathname === '/dashboard'
+                ?
+                <div className="flex justify-between items-center mb-6">
+                {/* <h2 className="text-2xl font-bold mb-4">Blog List</h2> */}
+                {
+                    pathname === '/dashboard'  // This logic should be adjust after authentication is implemented
+                    ? 
+                    <button
+                        className="bg-transparent text-2xl font-semibold hover:bg-[#64E09A] hover:text-[#242424] py-2 px-4 border border-[#64E09A] hover:border-transparent rounded"
+                        onClick={() => setOpen(true)}
+                    > Create Blog 
+                    </button> : null
+                }
+                
                 <Modal open = { open } onClose = { ()=> setOpen(false) }>
-                    <div className='text-center'>
-                        <div>
-                            <h3>Inside the model</h3>
-                        </div>
-                        <div>
-                            <h3>Inside the model</h3>
-                        </div>
-                        <div>
-                            <h3>Inside the model</h3>
-                        </div>
-                        <div>
-                            <h3>Inside the model</h3>
-                        </div>
-                        <div>
-                            <h3>Inside the model</h3>
-                        </div>
-                        <div>
-                            <h3>Inside the model</h3>
-                        </div>
+                    <div className='flex flex-col items-center justify-center h-full'>
+                        <RichTextEditor/>
+                        <button
+                            className="mt-5 bg-transparent text-lg font-semibold hover:bg-[#64E09A] hover:text-[#242424] py-2 px-4 border border-[#64E09A] hover:border-transparent rounded"
+                            onClick={() => setOpen(true)}
+                        > Submit
+                        </button>
                     </div>
                 </Modal>
             </div>
-            <ul className="space-y-4">
-                {blogs.map((blog) => (
-                <li key={blog.id} className="bg-white p-4 rounded-lg shadow-md">
-                    <h3 className="text-xl font-semibold">{blog.title}</h3>
-                    <p className="text-gray-600">{blog.content}</p>
+                :
+                null
+            }
+            
+            <ul className="space-y-5">
+                {blogs.map((blog, index) => (
+                <li key={blog.id} className={`bg-[#3E403F] rounded-lg shadow-md border border-[#00DF9A] `}>
+                    <h3 className="p-2 text-xl text-white-600 font-semibold">{blog.title}</h3>
+                    <p className=" p-2 text-white-600">{blog.content}</p>
                 </li>
                 ))}
             </ul>

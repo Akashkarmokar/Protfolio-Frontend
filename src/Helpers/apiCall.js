@@ -14,11 +14,11 @@ const callApi = async (method, url, data)=>{
         if(message === 'OK' && status_code === 200) {
             return Response.data.data
         }else {
-            makeToast("Something went wrong !!")
+            // makeToast("Something went wrong !!")
             return null
         }
     } catch(err) {
-        makeToast("Something went wrong !!")
+        // makeToast("Something went wrong !!")
     }
     
     

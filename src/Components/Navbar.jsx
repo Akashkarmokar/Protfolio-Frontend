@@ -33,6 +33,10 @@ const Navbar = ()=>{
                             <NavLink to="/" className="mx-1">Home</NavLink>
                             { pathname === '/' ? <h1 className="text-center text-[#00DF9A]">^</h1>: null }
                         </div>
+                        <div className="flex flex-col">
+                            <NavLink to="/experiences" className="mx-1">Experiences</NavLink>
+                            { pathname === '/experiences' ? <h1 className="text-center text-[#00DF9A]">^</h1>: null }
+                        </div>
                         {
                             <div className="flex flex-col">
                                 <NavLink to="/dashboard" className="mx-1">Dashboard</NavLink>
