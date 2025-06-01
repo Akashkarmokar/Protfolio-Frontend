@@ -5,7 +5,7 @@ const Experienc = () => {
             <div className="flex items-center justify-center">
                 <div className="flex flex-col items-center justify-center w-[30%]">
                     <h4>Company Name</h4>
-                    <h4>2024 - Present</h4>
+                    <h4>2000 - Present</h4>
                     <h4>Onsite</h4>
                 </div>
                 <div className="border-l-4 pl-4 flex flex-col items-start justify-center w-[70%] ">
