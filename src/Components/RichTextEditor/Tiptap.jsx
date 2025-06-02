@@ -285,7 +285,7 @@ const RichTextEditor = () => {
       </div> */}
       <MenuBar editor={editor} />
       <div className="border rounded-md p-4 bg-[#e4e3e3] min-h-[150px]">
-        <EditorContent editor={editor} className="prose max-w-none h-full" />
+        <EditorContent editor={editor} className="prose max-w-none h-full overflow-scroll" />
       </div>
     </div>
   )
