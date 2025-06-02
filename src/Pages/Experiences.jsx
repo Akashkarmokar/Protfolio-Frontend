@@ -22,9 +22,11 @@ const Experiences = ()=> {
     return (
         <div className="main-container space-y-5">
                 <div className="flex flex-col items-center justify-center">
-                    { Experienc()}
-                    { Experienc()}
-                    { Experienc()}
+                    {
+                        Array.from({ length: 3 }).map((_, index) => (
+                            <Experienc key={index} />
+                        ))
+                    }
                 </div>
         </div>
     )
