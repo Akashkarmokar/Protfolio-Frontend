@@ -257,7 +257,7 @@ const RichTextEditor = () => {
     content: '<p>Hello world!</p>',
     editorProps: {
       attributes: {
-        class: 'prose prose-sm m-0 focus:outline-none',
+        class: 'class: "min-h-[150px] cursor-text rounded-md border p-5 ring-offset-background focus-within:outline-none focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 "',
       },
     }
   })
@@ -284,8 +284,8 @@ const RichTextEditor = () => {
         </button>
       </div> */}
       <MenuBar editor={editor} />
-      <div className="border rounded-md p-4 bg-[#e4e3e3] min-h-[150px]">
-        <EditorContent editor={editor} className="prose max-w-none h-full overflow-scroll" />
+      <div className=" m-5 min-h-[150px]">
+        <EditorContent editor={editor} />
       </div>
     </div>
   )

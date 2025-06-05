@@ -1,4 +1,4 @@
-import './styles.css'
+
 
 import Highlight from '@tiptap/extension-highlight'
 import TextAlign from '@tiptap/extension-text-align'
@@ -27,7 +27,7 @@ const MenuBar = ({ editor }) => {
   ]
   return (
     <div className="control-group">
-      <div className="button-group">
+      <div className="button-group border rounded-md m-5 space-x-1">
         <button onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()} className={editor.isActive('heading', { level: 1 }) ? 'is-active p-1' : 'p-1'}>
           H1
         </button>
