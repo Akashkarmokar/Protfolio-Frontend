@@ -240,27 +240,76 @@ import './styles.css'
 // export default  Tiptap
 
 import TextAlign from '@tiptap/extension-text-align'
+import Highlight from '@tiptap/extension-highlight'
+import BulletList from '@tiptap/extension-bullet-list'
+import ListItem from '@tiptap/extension-list-item'
 import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import { useEffect } from 'react'
 import MenuBar from './MenuBar'
+import Underline from '@tiptap/extension-underline'
+import CodeBlock from '@tiptap/extension-code-block'
 
 const RichTextEditor = () => {
   const editor = useEditor({
-        extensions: [
-      StarterKit,
-      TextAlign.configure({
-        types: ['heading', 'paragraph'],
+    extensions: [
+      StarterKit.configure({
+        bulletList: {
+          // keepMarks: true,
+          // keepAttributes: false, // TODO: Making this as `false` because marks are not preserved when I try to preserve attrs, awaiting a bit of help
+          HTMLAttributes:{
+            class: 'list-disc pl-5',
+            itemTypeName: 'listItem'
+          }
+        },
+        orderedList: {
+          keepMarks: true,
+          keepAttributes: false, // TODO: Making this as `false` because marks are not preserved when I try to preserve attrs, awaiting a bit of help
+          HTMLAttributes:{
+            class: 'list-decimal pl-5',
+            itemTypeName: 'listItem'
+          }
+        },
+        codeBlock: {
+          HTMLAttributes: {
+            class: 'bg-gray-800 text-white p-4 rounded-md overflow-x-auto',
+          },
+          // languageClassPrefix: 'language-go',
+          // defaultLanguage: 'plaintext',
+        }
       }),
+      // TextAlign.configure({
+      //   types: ['heading', 'paragraph'],
+      // }),
       Highlight,
+      Underline.configure({
+        HTMLAttributes: {
+          class: 'underline decoration-2 decoration-[#64E09A] underline-offset-4',
+        },
+      }),
+      // CodeBlock.configure({
+      //   HTMLAttributes: {
+      //     class: 'bg-gray-800 text-white p-4 rounded-md overflow-x-auto',
+      //   },
+      //   languageClassPrefix: 'language-go',
+      //   defaultLanguage: 'plaintext',
+      // }),
     ],
     content: '<p>Hello world!</p>',
     editorProps: {
       attributes: {
-        class: 'class: "min-h-[150px] cursor-text rounded-md border p-5 ring-offset-background focus-within:outline-none focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 "',
+        class: "min-h-[280px] cursor-text rounded-md border p-5 ring-offset-background focus-within:outline-none focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 ",
       },
-    }
+    },
+    onUpdate: ({ editor }) => {
+      const html = editor.getHTML()
+      console.log('HTML : Editor content updated:', html)
+      // const json  = editor.getJSON()
+      // console.log('JSON : Editor content updated:', json)
+    },
   })
+
+  // editor.commands.setCodeBlock({ language: 'go' })
 
   useEffect(() => {
     return () => editor?.destroy()
@@ -269,20 +318,6 @@ const RichTextEditor = () => {
 
   return (
     <div className="w-full  mx-auto">
-      {/* <div className="flex gap-2 mb-2 bg-[#6366F1]">
-        <button
-          onClick={() => editor.chain().focus().toggleBold().run()}
-          className={`px-2 py-1 rounded-lg ${'bg-[#3e403f] text-white'}`}
-        >
-          Bold
-        </button>
-        <button
-          onClick={() => editor.chain().focus().toggleItalic().run()}
-          className={`px-2 py-1 rounded-lg ${'bg-[#3e403f] text-white' }`}
-        >
-          Italic
-        </button>
-      </div> */}
       <MenuBar editor={editor} />
       <div className=" m-5 min-h-[150px]">
         <EditorContent editor={editor} />
