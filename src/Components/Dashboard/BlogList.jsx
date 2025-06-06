@@ -28,6 +28,7 @@ const BlogList = (
     const { pathname } = useLocation();
     console.log("Pathname: ", pathname);
     const [ initialContent, setInitialContent ] = useState('<p>Hello world!</p>');
+    const [ contentTitle, setContentTitle ] = useState(''); // Assuming you want to manage the title of the blog post
     return (
         <div className="flex-col justify-center items-start">
             {
@@ -47,7 +48,13 @@ const BlogList = (
                 
                 <Modal open = { open } onClose = { ()=> setOpen(false) }>
                     <div className='flex flex-col items-center justify-center h-full'>
-                        <RichTextEditor initialContent={initialContent} setInitialContent={setInitialContent} />
+                        <div className='mx-auto border rounded-md w-full'>
+                            <input type="text" onChange={(e) => setContentTitle(e.target.value)} value={contentTitle} className=' w-full outline-none ring-0 focus:ring-0 focus:outline-none border bg-transparent  p-2 rounded' placeholder='Content Title' />
+                        </div>
+                        <RichTextEditor
+                             initialContent={initialContent} 
+                             setInitialContent={setInitialContent}
+                        />
                         <button
                             className="mt-5 bg-transparent text-lg font-semibold hover:bg-[#64E09A] hover:text-[#242424] py-2 px-4 border border-[#64E09A] hover:border-transparent rounded"
                             onClick={
@@ -58,6 +65,7 @@ const BlogList = (
                                      */
                                     setOpen(true);
                                     console.log("Submitted Content: ", initialContent);
+                                    console.log("Submitted Title: ", contentTitle);
                                 }
                             }
                         > Submit
