@@ -27,6 +27,7 @@ const BlogList = (
     const [ open , setOpen ] = useState(false);
     const { pathname } = useLocation();
     console.log("Pathname: ", pathname);
+    const [ initialContent, setInitialContent ] = useState('<p>Hello world!</p>');
     return (
         <div className="flex-col justify-center items-start">
             {
@@ -46,10 +47,19 @@ const BlogList = (
                 
                 <Modal open = { open } onClose = { ()=> setOpen(false) }>
                     <div className='flex flex-col items-center justify-center h-full'>
-                        <RichTextEditor/>
+                        <RichTextEditor initialContent={initialContent} setInitialContent={setInitialContent} />
                         <button
                             className="mt-5 bg-transparent text-lg font-semibold hover:bg-[#64E09A] hover:text-[#242424] py-2 px-4 border border-[#64E09A] hover:border-transparent rounded"
-                            onClick={() => setOpen(true)}
+                            onClick={
+                                () => {
+                                    /**
+                                     * If APi call after make submit is successful then
+                                     * setOpen(false) will close the modal
+                                     */
+                                    setOpen(true);
+                                    console.log("Submitted Content: ", initialContent);
+                                }
+                            }
                         > Submit
                         </button>
                     </div>

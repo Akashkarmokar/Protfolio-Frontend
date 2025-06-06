@@ -250,7 +250,7 @@ import MenuBar from './MenuBar'
 import Underline from '@tiptap/extension-underline'
 import CodeBlock from '@tiptap/extension-code-block'
 
-const RichTextEditor = () => {
+const RichTextEditor = ( { initialContent, setInitialContent }) => {
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -295,7 +295,7 @@ const RichTextEditor = () => {
       //   defaultLanguage: 'plaintext',
       // }),
     ],
-    content: '<p>Hello world!</p>',
+    content: initialContent,
     editorProps: {
       attributes: {
         class: "min-h-[280px] cursor-text rounded-md border p-5 ring-offset-background focus-within:outline-none focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 ",
@@ -303,9 +303,10 @@ const RichTextEditor = () => {
     },
     onUpdate: ({ editor }) => {
       const html = editor.getHTML()
-      console.log('HTML : Editor content updated:', html)
+      // console.log('HTML : Editor content updated:', html)
       // const json  = editor.getJSON()
       // console.log('JSON : Editor content updated:', json)
+      setInitialContent(html)
     },
   })
 
