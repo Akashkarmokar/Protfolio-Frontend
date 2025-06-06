@@ -222,7 +222,7 @@ import {
     const buttons = [ ...TextTypographyButtons, ...CodingButtons ,...UndoAndRedoActions ];
 
     return (
-      <div className="border rounded-md m-5 ">
+      <div className="border rounded-md my-5 ">
         <div className="mb-2 flex space-x-2">
         {buttons.map(({ icon, onClick, isActive, disabled }, index) => (
           <Button

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Modal from '../Modal.jsx';
 import RichTextEditor from '../RichTextEditor/Tiptap.jsx'; // Assuming you have a rich text editor component
 import { useLocation, NavLink } from "react-router-dom";
+import MultiSelectDropdown from '../MultiselectDropDownWithCheckBox.jsx';
 
 const BlogList = (
     { 
@@ -50,9 +51,14 @@ const BlogList = (
                 
                 <Modal open = { open } onClose = { ()=> setOpen(false) }>
                     <div className='flex flex-col items-center justify-center h-full'>
-                        <div className='mx-auto border rounded-md w-full'>
+                        <div className='mx-auto border rounded-md w-full my-5'>
                             <input type="text" onChange={(e) => setContentTitle(e.target.value)} value={contentTitle} className=' w-full outline-none ring-0 focus:ring-0 focus:outline-none border bg-transparent  p-2 rounded' placeholder='Content Title' />
                         </div>
+                        <div className='border rounded-md w-full my-5'>
+                            {/* <input type="text" onChange={(e) => setContentTitle(e.target.value)} value={contentTitle} className=' w-full outline-none ring-0 focus:ring-0 focus:outline-none border bg-transparent  p-2 rounded' placeholder='Content Title' /> */}
+                            <MultiSelectDropdown/>
+                        </div>
+                        
                         <RichTextEditor
                              initialContent={initialContent} 
                              setInitialContent={setInitialContent}

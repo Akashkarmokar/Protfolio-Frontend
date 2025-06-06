@@ -320,7 +320,7 @@ const RichTextEditor = ( { initialContent, setInitialContent }) => {
   return (
     <div className="w-full  mx-auto">
       <MenuBar editor={editor} />
-      <div className=" m-5 min-h-[150px]">
+      <div className="min-h-[150px]">
         <EditorContent editor={editor} />
       </div>
     </div>
