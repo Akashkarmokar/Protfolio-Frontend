@@ -26,7 +26,9 @@ const About = ()=>{
                         }
                     ]}/>
                     </div>
-                    
+                    {/**
+                     * Tags Section
+                     */}
                     <div className='ml-5 flex flex-col items-center justify-center rounded-md border '>
                         <h2 className='text-2xl font-bold'>Tags</h2>
                         <div className='m-2'>

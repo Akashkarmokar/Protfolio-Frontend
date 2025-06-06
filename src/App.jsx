@@ -1,6 +1,6 @@
 import './index.css'
 import {Routes,Route} from 'react-router-dom'
-import { About,Dashboard,Signin,Signup,NotFound, Experiences} from './Pages'
+import { About,Dashboard,Signin,Signup,NotFound, Experiences, BlogDetails} from './Pages'
 import { Navbar,PrivateOutlet,PrivateOutletRestriction } from './Components'
 import { AuthContext } from './Context'
 import { ToastContainer } from 'react-toastify'
@@ -51,6 +51,7 @@ const App = ()=> {
               {/* <Route path='/' element={<Home/>} /> */}
               <Route path='/' element={<About/>} />
               <Route path='/experiences' element={<Experiences/>} />
+              <Route path='/blog/:blog_id' element={<BlogDetails/>} />
               {/* <Route path='/miscellaneous' element={<Miscellaneous/>} />
               <Route path='/projects' element={<Projects/>} />
               <Route path='/blog/:id' element={<BlogDetails/>}/> */}

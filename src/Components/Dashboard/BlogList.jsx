@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Modal from '../Modal.jsx';
 import RichTextEditor from '../RichTextEditor/Tiptap.jsx'; // Assuming you have a rich text editor component
-import { useLocation } from "react-router-dom";
+import { useLocation, NavLink } from "react-router-dom";
 
 const BlogList = (
     { 
@@ -24,6 +24,8 @@ const BlogList = (
         ] 
     }
 ) => {
+
+
     const [ open , setOpen ] = useState(false);
     const { pathname } = useLocation();
     console.log("Pathname: ", pathname);
@@ -79,9 +81,11 @@ const BlogList = (
             
             <ul className="space-y-5">
                 {blogs.map((blog, index) => (
-                <li key={blog.id} className={`bg-[#3E403F] rounded-lg shadow-md border border-[#00DF9A] `}>
-                    <h3 className="p-2 text-xl text-white-600 font-semibold">{blog.title}</h3>
-                    <p className=" p-2 text-white-600">{blog.content}</p>
+                <li onClick={()=> console.log("HELLO")} key={blog.id} className={`bg-[#3E403F] cursor-pointer rounded-lg shadow-md border border-[#00DF9A] `}>
+                    <NavLink to={`/blog/${blog.id}`} className="flex flex-col items-start justify-start">
+                        <h3 className="p-2 text-xl text-white-600 font-semibold">{blog.title}</h3>
+                        <p className=" p-2 text-white-600">{blog.content}</p>
+                    </NavLink>
                 </li>
                 ))}
             </ul>
