@@ -11,7 +11,7 @@ const About = ()=>{
                         <BlogList blogs={ [
                         {
                             id: 1,
-                            title: "Understa",
+                            title: "A Guide to JavaScript Promises",
                             content: "React Hooks are functions that let you use state and other React features without writing a class."
                         },
                         {
