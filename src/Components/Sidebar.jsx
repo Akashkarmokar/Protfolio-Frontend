@@ -34,7 +34,7 @@ const Sidebar = ({ props_data })=> {
                 >
                   <NavLink
                     href="#"
-                    className="flex items-center p-2 text-gray-900  rounded-lg text-white hover:bg-[#3e403f] dark:hover:bg-gray-700 group"
+                    className="flex items-center p-2   rounded-lg text-white hover:bg-[#3e403f] dark:hover:bg-gray-700 group"
                   >
                     <svg
                       className="w-5 h-5 text-[#00DF9A] transition duration-75 dark:text-gray-400 "
@@ -60,7 +60,7 @@ const Sidebar = ({ props_data })=> {
                   onClick={() => setSelectedMenu("blogs")}>
                   <a
                     href="#"
-                    className="flex items-center p-2 text-gray-900  rounded-lg text-white hover:bg-[#3e403f] dark:hover:bg-gray-700 group"
+                    className="flex items-center p-2  rounded-lg text-white hover:bg-[#3e403f] dark:hover:bg-gray-700 group"
                   >
                     <svg
                       className="w-5 h-5 text-[#00DF9A] transition duration-75 dark:text-gray-400 "
