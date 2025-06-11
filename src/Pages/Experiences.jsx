@@ -2,29 +2,7 @@ import { NavLink } from "react-router-dom";
 
 const Experienc = ({experienceData}) => {
     return (
-        // <div className="main-container my-5">
-        //     <div className="flex items-center justify-center">
-        //         <div className="flex flex-col items-center justify-center w-[30%]">
-        //             <NavLink to="https://www.yotech.ltd/"><h1 className="text-[#00DF9A]">Valt</h1></NavLink>
-        //             <p><NavLink to={"https://www.yotech.ltd/"}>Website</NavLink> | <NavLink to={"https://www.yotech.ltd/"}>Linkedin</NavLink></p>
-        //             <h4>{"2000 - Present"}</h4>
-        //             {/* <h4>{"Onsite"}</h4> */}
-        //         </div>
-        //         <div className=" border-l-4 pl-4 flex flex-col items-start justify-center w-[70%] ">
-        //             <h2 className="my-1 text-2xl"> Software Engineer | <span className="text-xs">{"Onsite"}</span></h2>
-        //             <h2 className="my-1 text-sm">Tech Skills: ExpressJS | FastAPI | Postgresql | MongoDB | Socket | Redis | SQLAlchemy | Alembic </h2>
-        //             {/* <p className="my-1">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Odio quo placeat ducimus! Non totam quam hic sint omnis vitae repudiandae accusamus? Odio accusantium ullam assumenda corporis, explicabo distinctio deleniti illum?</p> */}
-        //             <h1 className="text-2xl">Experiences: </h1>
-        //             <ul className="list-disc pl-10">
-        //                 <li>Maintaining one of the largest food delivery system (yofoodie) and multi-vendor EPOS system.</li>
-        //                 <li>Developed and deployed REAL TIME QE authentication system for vendor management app with SOCKET programming.</li>
-        //                 <li>Integrating THIRD-PARTY services and building product on top of STRIPE.</li>
-        //                 <li>Migrated less used services to aws lambda to reduce server cost implementing GraphQL to produce less JSON response from AWS lambda.</li>
-        //                 <li>Refactor one of microservices of socket management and lead a team to make this service identical for both API call and Socket Event.</li>
-        //             </ul>
-        //         </div>
-        //     </div>
-        // </div>
+        
         <div className="main-container my-5">
             <div className="flex items-center justify-center">
                 <div className="flex flex-col items-center justify-center w-[30%]">

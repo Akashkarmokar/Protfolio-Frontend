@@ -6,10 +6,10 @@ const Sidebar = ({ props_data })=> {
     // const [ selectedMenu, setSelectedMenu ] = useState("profile")
     const { selectedMenu, setSelectedMenu } = props_data;
     return (
-        <div className="w-[30%]">
+        <div className="w-[20%] h-[calc(100vh-90px)]">
             <aside
               id="logo-sidebar"
-              className="left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
+              className="left-0 h-full z-40  transition-transform -translate-x-full sm:translate-x-0"
               aria-label="Sidebar"
             >
             <div className="h-full px-3 py-4 overflow-y-auto bg-[#242424] dark:bg-gray-800 rounded-md border">

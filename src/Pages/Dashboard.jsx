@@ -175,7 +175,7 @@ const Dashboard = () => {
       <div className="main-container mt-5">
         <div className="flex items-start justify-start m-2">
           <Sidebar props_data = { {selectedMenu: selectedMenu, setSelectedMenu: setSelectedMenu }}/>
-          <div className="w-[100%] flex flex-col justify-start mx-5 ">
+          <div className="w-[80%] flex flex-col justify-start mx-5 ">
             <div className='flex flex-row justify-center items-center'>
               <div className="flex flex-col items-center justify-center">
                 <DashboardRightBar props_data = { { selectedMenu: selectedMenu } }/>
@@ -183,7 +183,7 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
-    </div>
+      </div>
     </>
   )
 }
