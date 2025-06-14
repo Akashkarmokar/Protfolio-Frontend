@@ -50,7 +50,7 @@ const BlogList = () => {
                 status: 'ACTIVE',
             }
         },
-        // fetchPolicy: 'no-cache'
+        fetchPolicy: 'no-cache'
         // fetchPolicy: 'network-only'
     });
     console.log("LIST: ", postListingData)
@@ -102,7 +102,7 @@ const BlogList = () => {
             }
             
             setOpen(false); // Close the modal after successful creation
-            // setAllPosts((prevPosts) => [response.data.CreatePost,...prevPosts, ]);
+            setAllPosts((prevPosts) => [response.data.CreatePost,...prevPosts, ]);
         } catch (err) {
             if(createPostError) {
                 makeToast(err.message, "error");
@@ -168,7 +168,7 @@ const BlogList = () => {
             
             <ul className="space-y-5">
                 {AllPosts.map((blog, index) => (
-                    <li onClick={()=> console.log("HELLO")} key={index} className={`bg-[#3E403F] cursor-pointer rounded-lg shadow-md border border-[#00DF9A] `}>
+                    <li onClick={()=> console.log("HELLO")} key={index} className={`bg-[#3E403F] cursor-pointer rounded-lg shadow-md border border-[#00DF9A] min-w-[700px]`}>
                         <NavLink to={`/blog/${blog.id}`} className="flex flex-col items-start justify-start">
                             <h3 className="p-2 text-xl text-white-600 font-semibold">{blog.title}</h3>
                             <p className=" p-2 text-white-600">{blog.content}</p>
