@@ -272,7 +272,7 @@ const RichTextEditor = ( { initialContent, setInitialContent }) => {
         },
         codeBlock: {
           HTMLAttributes: {
-            class: 'bg-gray-800 text-white p-4 rounded-md overflow-x-auto',
+            class: 'bg-gray-800 text-white p-4 rounded-md overflow-x-auto min-w-full',
           },
           // languageClassPrefix: 'language-go',
           // defaultLanguage: 'plaintext',

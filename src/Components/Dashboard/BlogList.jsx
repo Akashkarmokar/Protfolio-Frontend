@@ -166,16 +166,21 @@ const BlogList = () => {
                 null
             }
             
-            <ul className="space-y-5">
+            <div className="space-y-5">
                 {AllPosts.map((blog, index) => (
-                    <li onClick={()=> console.log("HELLO")} key={index} className={`bg-[#3E403F] cursor-pointer rounded-lg shadow-md border border-[#00DF9A] min-w-[700px]`}>
-                        <NavLink to={`/blog/${blog.id}`} className="flex flex-col items-start justify-start">
-                            <h3 className="p-2 text-xl text-white-600 font-semibold">{blog.title}</h3>
-                            <p className=" p-2 text-white-600">{blog.content}</p>
-                        </NavLink>
-                    </li>
+                    <div className='text-white rounded-lg shadow-md border border-white p-2'>
+                        <div onClick={()=> console.log("HELLO")} key={index} className={`bg-[#3E403F] cursor-pointer rounded-lg shadow-md  min-w-[700px]`}>
+                            <NavLink to={`/blog/${blog.id}`} className="flex flex-col items-start justify-start">
+                                <h3 className="p-2 text-xl text-white-600 font-semibold">{blog.title}</h3>
+                                {/* <p className=" p-2 text-white-600">{blog.content}</p> */}
+                                
+                            </NavLink>
+                        </div>
+                        <div className='prose text-white p-2 min-w-full' dangerouslySetInnerHTML={ { __html: blog.content }}/>
+                    </div>
+                    
                 ))}
-            </ul>
+            </div>
         </div>
     );
 }
