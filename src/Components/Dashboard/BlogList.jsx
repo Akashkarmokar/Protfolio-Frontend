@@ -1,37 +1,119 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Modal from '../Modal.jsx';
 import RichTextEditor from '../RichTextEditor/Tiptap.jsx'; // Assuming you have a rich text editor component
 import { useLocation, NavLink } from "react-router-dom";
 import MultiSelectDropdown from '../MultiselectDropDownWithCheckBox.jsx';
+import { gql, useMutation, useQuery } from '@apollo/client'; 
+import { makeToast } from '../../Helpers/index.js';
 
-const BlogList = (
-    { 
-        blogs = [
-            {
-                id: 1,
-                title: "Understanding React Hooks",
-                content: "React Hooks are functions that let you use state and other React features without writing a class."
-            },
-            {
-                id: 2,
-                title: "A Guide to JavaScript Promises",
-                content: "Promises are objects that represent the eventual completion (or failure) of an asynchronous operation."
-            },
-            {
-                id: 3,
-                title: "CSS Grid vs Flexbox",
-                content: "CSS Grid and Flexbox are both powerful layout systems in CSS, each with its own strengths and use cases."
-            }
-        ] 
-    }
-) => {
+
+const BlogList = () => {
 
 
     const [ open , setOpen ] = useState(false);
-    const { pathname } = useLocation();
-    console.log("Pathname: ", pathname);
     const [ initialContent, setInitialContent ] = useState('<p>Hello world!</p>');
-    const [ contentTitle, setContentTitle ] = useState(''); // Assuming you want to manage the title of the blog post
+    const [ contentTitle, setContentTitle ] = useState(''); 
+    const [ AllPosts, setAllPosts ] = useState([]);
+
+    
+
+    const { pathname } = useLocation();
+
+
+    
+    const CREATE_BLOG_POST = gql`
+        mutation Mutation($inputData: CreatePostInput) {
+            CreatePost(inputData: $inputData) {
+                id
+                title
+                content
+                status
+            }
+        }
+    `;
+
+    const PostListing = gql`
+        query Query($inputData: PostListingInput) {
+            PostListing(inputData: $inputData) {
+                id
+                title
+                content
+                status
+            }
+        }
+    `;
+    const [ createBlogPost, { data, loading, error: createPostError } ] = useMutation(CREATE_BLOG_POST);
+
+    const { data: postListingData, loading: postListingLoading, error: postListingError } = useQuery(PostListing, {
+        variables: {
+            inputData: {
+                status: 'ACTIVE',
+            }
+        },
+        // fetchPolicy: 'no-cache'
+        // fetchPolicy: 'network-only'
+    });
+    console.log("LIST: ", postListingData)
+
+    useEffect(() => {
+        if (postListingData && postListingData.PostListing) {
+            setAllPosts((prevPosts) => [...prevPosts, ...postListingData.PostListing]);
+        }
+        if (postListingError) {
+            makeToast("Error fetching blog posts", "error");
+            return;
+        }
+        
+        return () => {
+            setAllPosts([]);
+        }
+    }, [ postListingData, postListingError]);
+    
+
+    /**
+     * Run If Model Closed Only
+     */
+    useEffect(() => {
+        if(!open) {
+            console.log("Modal closed");
+        }
+    }, [open])
+
+
+    const handleCreateBlogPost = async () => {
+        try {
+            if(!contentTitle || !initialContent) {
+                makeToast("Title and content cannot be empty", "error");
+                return;
+            }
+            const response = await createBlogPost({
+                variables: {
+                    inputData: {
+                        title: contentTitle,
+                        content: initialContent,
+                        status: 'ACTIVE' 
+                    }
+                }
+            });
+            console.log("RES: ", response)
+            if (createPostError) {
+                makeToast("Error creating blog post", "error");
+                return;
+            }
+            
+            setOpen(false); // Close the modal after successful creation
+            // setAllPosts((prevPosts) => [response.data.CreatePost,...prevPosts, ]);
+        } catch (err) {
+            if(createPostError) {
+                makeToast(err.message, "error");
+                return
+            }
+            makeToast("Something went wrong", "error");
+            return
+        }
+    }
+
+    
     return (
         <div className="flex-col justify-center items-start">
             {
@@ -72,8 +154,7 @@ const BlogList = (
                                      * setOpen(false) will close the modal
                                      */
                                     setOpen(true);
-                                    console.log("Submitted Content: ", initialContent);
-                                    console.log("Submitted Title: ", contentTitle);
+                                    handleCreateBlogPost()
                                 }
                             }
                         > Submit
@@ -86,13 +167,13 @@ const BlogList = (
             }
             
             <ul className="space-y-5">
-                {blogs.map((blog, index) => (
-                <li onClick={()=> console.log("HELLO")} key={blog.id} className={`bg-[#3E403F] cursor-pointer rounded-lg shadow-md border border-[#00DF9A] `}>
-                    <NavLink to={`/blog/${blog.id}`} className="flex flex-col items-start justify-start">
-                        <h3 className="p-2 text-xl text-white-600 font-semibold">{blog.title}</h3>
-                        <p className=" p-2 text-white-600">{blog.content}</p>
-                    </NavLink>
-                </li>
+                {AllPosts.map((blog, index) => (
+                    <li onClick={()=> console.log("HELLO")} key={index} className={`bg-[#3E403F] cursor-pointer rounded-lg shadow-md border border-[#00DF9A] `}>
+                        <NavLink to={`/blog/${blog.id}`} className="flex flex-col items-start justify-start">
+                            <h3 className="p-2 text-xl text-white-600 font-semibold">{blog.title}</h3>
+                            <p className=" p-2 text-white-600">{blog.content}</p>
+                        </NavLink>
+                    </li>
                 ))}
             </ul>
         </div>
