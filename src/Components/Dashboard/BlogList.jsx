@@ -14,7 +14,7 @@ const BlogList = () => {
     const [ initialContent, setInitialContent ] = useState('<p>Hello world!</p>');
     const [ contentTitle, setContentTitle ] = useState(''); 
     const [ AllPosts, setAllPosts ] = useState([]);
-
+    const [ selectedStatus, setSelectedStatus ] = useState(null);
     
 
     const { pathname } = useLocation();
@@ -91,7 +91,7 @@ const BlogList = () => {
                     inputData: {
                         title: contentTitle,
                         content: initialContent,
-                        status: 'ACTIVE' 
+                        status: selectedStatus 
                     }
                 }
             });
@@ -145,20 +145,29 @@ const BlogList = () => {
                              initialContent={initialContent} 
                              setInitialContent={setInitialContent}
                         />
-                        <button
-                            className="mt-5 bg-transparent text-lg font-semibold hover:bg-[#64E09A] hover:text-[#242424] py-2 px-4 border border-[#64E09A] hover:border-transparent rounded"
-                            onClick={
-                                () => {
-                                    /**
-                                     * If APi call after make submit is successful then
-                                     * setOpen(false) will close the modal
-                                     */
-                                    setOpen(true);
-                                    handleCreateBlogPost()
+                        
+                        <div className='m-2 p-2 w-full flex items-center justify-end'>
+                            <select onChange={(e)=> setSelectedStatus(e.target.value)} className='border border-[#64E09A] bg-transparent rounded' name="status" id="status">
+                                <option className='bg-white text-black' value="DRAFT">Draft</option>
+                                <option className='bg-white text-black' value="ACTIVE">Active</option>
+                                <option className= 'bg-white text-black' value="INACTIVE">Inactive</option>
+                            </select>
+                            
+                            <button
+                                className="mx-2 bg-transparent text-lg font-semibold hover:bg-[#64E09A] hover:text-[#242424] py-2 px-4 border border-[#64E09A] hover:border-transparent rounded"
+                                onClick={
+                                    () => {
+                                        /**
+                                         * If APi call after make submit is successful then
+                                         * setOpen(false) will close the modal
+                                         */
+                                        setOpen(true);
+                                        handleCreateBlogPost()
+                                    }
                                 }
-                            }
-                        > Submit
-                        </button>
+                            > Submit
+                            </button>
+                        </div>
                     </div>
                 </Modal>
             </div>
@@ -178,7 +187,6 @@ const BlogList = () => {
                         </div>
                         <div className='prose text-white p-2 min-w-full' dangerouslySetInnerHTML={ { __html: blog.content }}/>
                     </div>
-                    
                 ))}
             </div>
         </div>
