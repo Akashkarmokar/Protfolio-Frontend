@@ -29,7 +29,7 @@ const BlogDetails = ()=>{
                         }
                     }
                 })
-                console.log("SINGLE BLOG: ", response);
+                // console.log("SINGLE BLOG: ", response);
                 if(response.data) {
                     const { Post } = response.data;
                     setSingleBlog(Post);

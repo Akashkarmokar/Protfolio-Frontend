@@ -13,9 +13,9 @@ const PostEdit = ({ blogDetails, setAllPosts, setModalClose })=> {
     const [ selectedStatus, setSelectedStatus ] = useState(blogDetails?.status ?? "");
 
     useEffect(()=> {
-        console.log("Modal UseEffect Called !!");
+        // console.log("Modal UseEffect Called !!");
         return () => {
-            console.log("Post Edit Modal Unmount Fn Called !!")
+            // console.log("Post Edit Modal Unmount Fn Called !!")
         }
     }, [])
     const UpdatePostMutation = gql`
@@ -41,14 +41,14 @@ const PostEdit = ({ blogDetails, setAllPosts, setModalClose })=> {
                     content: content
                 }
             }})
-            console.log("RES: ", response)
+            // console.log("RES: ", response)
             if(response?.data){
                 setAllPosts((preValue)=> {
                     const idx = preValue.findIndex((value)=> {
-                        console.log("stat id: ", value.id, "updated value id: ", response?.data?.UpdatePost?.id)
+                        // console.log("stat id: ", value.id, "updated value id: ", response?.data?.UpdatePost?.id)
                         return value.id === response?.data?.UpdatePost?.id
                     })
-                    console.log("Index: ", idx)
+                    // console.log("Index: ", idx)
                     if(idx !== -1) {
                         preValue.splice(idx, 1, {...response?.data?.UpdatePost });
                         return preValue;
@@ -160,7 +160,7 @@ const BlogList = () => {
         fetchPolicy: 'no-cache'
         // fetchPolicy: 'network-only'
     });
-    console.log("LIST: ", postListingData)
+    // console.log("LIST: ", postListingData)
 
     useEffect(() => {
         if (postListingData && postListingData.PostListing) {
@@ -182,7 +182,7 @@ const BlogList = () => {
      */
     useEffect(() => {
         if(!open) {
-            console.log("Modal closed");
+            // console.log("Modal closed");
         }
     }, [open])
 
@@ -202,7 +202,7 @@ const BlogList = () => {
                     }
                 }
             });
-            console.log("RES: ", response)
+            // console.log("RES: ", response)
             if (createPostError) {
                 makeToast("Error creating blog post", "error");
                 return;
@@ -221,11 +221,11 @@ const BlogList = () => {
     }
 
     const handlePostEdit = (e, blogDetails, index) => {
-        console.log("INDEX : ", index)
-        console.log("postEditOpen", postEditOpen)
+        // console.log("INDEX : ", index)
+        // console.log("postEditOpen", postEditOpen)
         setPostEditOpen(index)
-        console.log("INDEX : ", index)
-        console.log("postEditOpen", postEditOpen)
+        // console.log("INDEX : ", index)
+        // console.log("postEditOpen", postEditOpen)
     }
 
     return (
