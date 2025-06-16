@@ -7,6 +7,112 @@ import { gql, useMutation, useQuery } from '@apollo/client';
 import { makeToast } from '../../Helpers/index.js';
 
 
+const PostEdit = ({ blogDetails, setAllPosts, setModalClose })=> {
+    const [ contentTitle, setContentTitle ] = useState(blogDetails?.title?? "");
+    const [ content, setContent ] = useState(blogDetails?.content?? "");
+    const [ selectedStatus, setSelectedStatus ] = useState(blogDetails?.status ?? "");
+
+    useEffect(()=> {
+        console.log("Modal UseEffect Called !!");
+        return () => {
+            console.log("Post Edit Modal Unmount Fn Called !!")
+        }
+    }, [])
+    const UpdatePostMutation = gql`
+        mutation Mutation($inputData: UpdatePostInput) {
+            UpdatePost(inputData: $inputData) {
+                content
+                id
+                short_preview_content
+                status
+                title
+            }
+        }  
+    `;
+    const [ updatePostContent, { data:PostUpdatedData, loading:doesPostUpdateOnLoad, error: postUpdateError }] = useMutation(UpdatePostMutation); 
+
+
+    const handleSubmitAction = async (e)=> {
+        try {
+            const response = await updatePostContent({variables: {
+                inputData: {
+                    id: blogDetails.id,
+                    title: contentTitle,
+                    content: content
+                }
+            }})
+            console.log("RES: ", response)
+            if(response?.data){
+                setAllPosts((preValue)=> {
+                    const idx = preValue.findIndex((value)=> {
+                        console.log("stat id: ", value.id, "updated value id: ", response?.data?.UpdatePost?.id)
+                        return value.id === response?.data?.UpdatePost?.id
+                    })
+                    console.log("Index: ", idx)
+                    if(idx !== -1) {
+                        preValue.splice(idx, 1, {...response?.data?.UpdatePost });
+                        return preValue;
+                    }
+                })
+                makeToast("Post Updated successfully")
+            }
+            setModalClose()
+            return;
+        }catch(err) {
+            makeToast("Someting went wrong.")
+            return;
+        }
+    }
+    return (
+        <div className='flex flex-col items-center justify-center h-full'>
+            <div className='mx-auto border rounded-md w-full my-5'>
+                <input 
+                    type="text" 
+                    onChange={(e) => setContentTitle(e.target.value) } 
+                    value={contentTitle} 
+                    className='w-full outline-none ring-0 focus:ring-0 focus:outline-none border bg-transparent  p-2 rounded' 
+                    placeholder='Content Title' 
+                />
+            </div>
+            <div 
+                className='border rounded-md w-full my-5'
+            >
+                {/* <input type="text" onChange={(e) => setContentTitle(e.target.value)} value={contentTitle} className=' w-full outline-none ring-0 focus:ring-0 focus:outline-none border bg-transparent  p-2 rounded' placeholder='Content Title' /> */}
+                <MultiSelectDropdown/>
+            </div>
+            
+            <RichTextEditor
+                initialContent={content} 
+                setInitialContent={setContent}
+            />
+            
+            <div className='m-2 p-2 w-full flex items-center justify-end'>
+                <select onChange={(e)=> setSelectedStatus(e.target.value)} value={selectedStatus} className='border border-[#64E09A] bg-transparent rounded' name="status" id="status">
+                    <option className='bg-white text-black' value="DRAFT">Draft</option>
+                    <option className='bg-white text-black' value="ACTIVE">Active</option>
+                    <option className= 'bg-white text-black' value="INACTIVE">Inactive</option>
+                </select>
+                
+                <button
+                    className="mx-2 bg-transparent text-lg font-semibold hover:bg-[#64E09A] hover:text-[#242424] py-2 px-4 border border-[#64E09A] hover:border-transparent rounded"
+                    onClick={
+                        (e) => {
+                            /**
+                             * If APi call after make submit is successful then
+                             * setOpen(false) will close the modal
+                             */
+                            // setOpen(true);
+                            handleSubmitAction(e)
+                        }
+                    }
+                > Submit
+                </button>
+            </div>
+        </div>
+    )
+}
+
+
 const BlogList = () => {
 
 
@@ -16,6 +122,7 @@ const BlogList = () => {
     const [ AllPosts, setAllPosts ] = useState([]);
     const [ selectedStatus, setSelectedStatus ] = useState(null);
     
+    const [ postEditOpen, setPostEditOpen ] = useState(-1);
 
     const { pathname } = useLocation();
 
@@ -113,7 +220,14 @@ const BlogList = () => {
         }
     }
 
-    
+    const handlePostEdit = (e, blogDetails, index) => {
+        console.log("INDEX : ", index)
+        console.log("postEditOpen", postEditOpen)
+        setPostEditOpen(index)
+        console.log("INDEX : ", index)
+        console.log("postEditOpen", postEditOpen)
+    }
+
     return (
         <div className="flex-col justify-center items-start">
             {
@@ -186,6 +300,24 @@ const BlogList = () => {
                             </NavLink>
                         </div>
                         <div className='prose text-white p-2 min-w-full' dangerouslySetInnerHTML={ { __html: blog.content }}/>
+                        <div className='flex items-start justify-end'>
+                            <button 
+                                onClick={ (e)=> { handlePostEdit(e, blog, index + 1 ) }}
+                                className='p-2 rounded border'
+                            >
+                                Edit
+                            </button>
+                        </div>
+                        {
+                            postEditOpen == index + 1
+                            ?
+                            <Modal open = { postEditOpen } onClose = { ()=> setPostEditOpen(-1) }>
+                                <PostEdit blogDetails={blog} setAllPosts= {setAllPosts} setModalClose = { ()=> {setPostEditOpen(-1) } }/> 
+                            </Modal>
+                            :
+                            null
+                        }
+                        
                     </div>
                 ))}
             </div>

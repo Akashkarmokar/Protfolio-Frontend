@@ -2,7 +2,7 @@ import { MdCloseFullscreen } from "react-icons/md";
 const Modal  = ({ open, onClose, children })=> {
     return (
         <div onClick={onClose} className={
-            `fixed inset-0 flex justify-center border items-center ${ open ? "visible bg-black/50 " : "invisible" }`
+            `fixed inset-0 flex justify-center items-center ${ open ? "visible bg-black/50 " : "invisible" }`
         }>
             { /*Modal */}
             <div
