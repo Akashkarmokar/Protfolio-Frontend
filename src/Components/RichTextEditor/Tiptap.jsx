@@ -249,8 +249,9 @@ import { useEffect } from 'react'
 import MenuBar from './MenuBar'
 import Underline from '@tiptap/extension-underline'
 import CodeBlock from '@tiptap/extension-code-block'
+import Placeholder from '@tiptap/extension-placeholder'
 
-const RichTextEditor = ( { initialContent, setInitialContent }) => {
+const RichTextEditor = ( { initialContent, setInitialContent, doesShowMenuBar = true, height = "min-h-[100px]" }) => {
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -294,11 +295,14 @@ const RichTextEditor = ( { initialContent, setInitialContent }) => {
       //   languageClassPrefix: 'language-go',
       //   defaultLanguage: 'plaintext',
       // }),
+      Placeholder.configure({
+        placeholder: "Short Preview Of Your content"
+      })
     ],
     content: initialContent,
     editorProps: {
       attributes: {
-        class: "min-h-[280px] cursor-text rounded-md border p-5 ring-offset-background focus-within:outline-none focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 ",
+        class: `${[height]} cursor-text rounded-md border p-5 ring-offset-background focus-within:outline-none focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 `,
       },
     },
     onUpdate: ({ editor }) => {
@@ -319,7 +323,7 @@ const RichTextEditor = ( { initialContent, setInitialContent }) => {
 
   return (
     <div className="w-full  mx-auto">
-      <MenuBar editor={editor} />
+      { doesShowMenuBar ? <MenuBar editor={editor} /> : null }
       <div className="min-h-[150px]">
         <EditorContent editor={editor} />
       </div>

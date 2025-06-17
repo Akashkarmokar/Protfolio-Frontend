@@ -118,6 +118,7 @@ const BlogList = () => {
 
     const [ open , setOpen ] = useState(false);
     const [ initialContent, setInitialContent ] = useState('<p>Hello world!</p>');
+    const [ short_preview_content, set_short_preview_content ] = useState('');
     const [ contentTitle, setContentTitle ] = useState(''); 
     const [ AllPosts, setAllPosts ] = useState([]);
     const [ selectedStatus, setSelectedStatus ] = useState(null);
@@ -198,7 +199,8 @@ const BlogList = () => {
                     inputData: {
                         title: contentTitle,
                         content: initialContent,
-                        status: selectedStatus 
+                        status: selectedStatus,
+                        short_preview_content: short_preview_content
                     }
                 }
             });
@@ -250,14 +252,26 @@ const BlogList = () => {
                         <div className='mx-auto border rounded-md w-full my-5'>
                             <input type="text" onChange={(e) => setContentTitle(e.target.value)} value={contentTitle} className=' w-full outline-none ring-0 focus:ring-0 focus:outline-none border bg-transparent  p-2 rounded' placeholder='Content Title' />
                         </div>
-                        <div className='border rounded-md w-full my-5'>
-                            {/* <input type="text" onChange={(e) => setContentTitle(e.target.value)} value={contentTitle} className=' w-full outline-none ring-0 focus:ring-0 focus:outline-none border bg-transparent  p-2 rounded' placeholder='Content Title' /> */}
+                        
+                        {/* <div className='border rounded-md w-full my-5'>
                             <MultiSelectDropdown/>
+                        </div> */}
+
+                        <div className= "w-full" >
+                            <RichTextEditor
+                                initialContent={short_preview_content} 
+                                setInitialContent={set_short_preview_content}
+                                doesShowMenuBar = { false }
+                                height = "min-h-[100px]"
+                            />
                         </div>
+                    
                         
                         <RichTextEditor
                              initialContent={initialContent} 
                              setInitialContent={setInitialContent}
+                             doesShowMenuBar = { true }
+                             height = "min-h-[280px]"
                         />
                         
                         <div className='m-2 p-2 w-full flex items-center justify-end'>
@@ -271,10 +285,6 @@ const BlogList = () => {
                                 className="mx-2 bg-transparent text-lg font-semibold hover:bg-[#64E09A] hover:text-[#242424] py-2 px-4 border border-[#64E09A] hover:border-transparent rounded"
                                 onClick={
                                     () => {
-                                        /**
-                                         * If APi call after make submit is successful then
-                                         * setOpen(false) will close the modal
-                                         */
                                         setOpen(true);
                                         handleCreateBlogPost()
                                     }
