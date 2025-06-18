@@ -9,6 +9,7 @@ import { makeToast } from '../../Helpers/index.js';
 
 const PostEdit = ({ blogDetails, setAllPosts, setModalClose })=> {
     const [ contentTitle, setContentTitle ] = useState(blogDetails?.title?? "");
+    const [ short_preview_content, set_short_preview_content ] = useState(blogDetails?.short_preview_content?? "");
     const [ content, setContent ] = useState(blogDetails?.content?? "");
     const [ selectedStatus, setSelectedStatus ] = useState(blogDetails?.status ?? "");
 
@@ -74,13 +75,20 @@ const PostEdit = ({ blogDetails, setAllPosts, setModalClose })=> {
                     placeholder='Content Title' 
                 />
             </div>
-            <div 
+            {/* <div 
                 className='border rounded-md w-full my-5'
             >
-                {/* <input type="text" onChange={(e) => setContentTitle(e.target.value)} value={contentTitle} className=' w-full outline-none ring-0 focus:ring-0 focus:outline-none border bg-transparent  p-2 rounded' placeholder='Content Title' /> */}
                 <MultiSelectDropdown/>
+            </div> */}
+            <div className= "w-full" >
+                <RichTextEditor
+                    initialContent={short_preview_content} 
+                    setInitialContent={set_short_preview_content}
+                    doesShowMenuBar = { false }
+                    height = "min-h-[100px]"
+                />
             </div>
-            
+
             <RichTextEditor
                 initialContent={content} 
                 setInitialContent={setContent}
@@ -147,6 +155,7 @@ const BlogList = () => {
                 title
                 content
                 status
+                short_preview_content
             }
         }
     `;
@@ -309,7 +318,9 @@ const BlogList = () => {
                                 
                             </NavLink>
                         </div>
-                        <div className='prose text-white p-2 min-w-full' dangerouslySetInnerHTML={ { __html: blog.content }}/>
+                        <div className='prose text-white p-2 min-w-full' dangerouslySetInnerHTML={ { __html: blog?.short_preview_content ?? "" }}/>
+
+                        {/* <div className='prose text-white p-2 min-w-full' dangerouslySetInnerHTML={ { __html: blog.content }}/> */}
                         <div className='flex items-start justify-end'>
                             <button 
                                 onClick={ (e)=> { handlePostEdit(e, blog, index + 1 ) }}
