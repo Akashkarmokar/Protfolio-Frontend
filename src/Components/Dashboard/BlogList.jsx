@@ -3,7 +3,7 @@ import Modal from '../Modal.jsx';
 import RichTextEditor from '../RichTextEditor/Tiptap.jsx'; // Assuming you have a rich text editor component
 import { useLocation, NavLink } from "react-router-dom";
 import MultiSelectDropdown from '../MultiselectDropDownWithCheckBox.jsx';
-import { gql, useMutation, useQuery } from '@apollo/client'; 
+import { gql, useMutation, useQuery, useLazyQuery } from '@apollo/client'; 
 import { makeToast } from '../../Helpers/index.js';
 
 
@@ -130,8 +130,10 @@ const BlogList = () => {
     const [ contentTitle, setContentTitle ] = useState(''); 
     const [ AllPosts, setAllPosts ] = useState([]);
     const [ selectedStatus, setSelectedStatus ] = useState(null);
-    
     const [ postEditOpen, setPostEditOpen ] = useState(-1);
+    const [ currentTotalCount, setCurrentTotalCount ] = useState(0);
+    const [ listingMetadata, setListingMetadata ] = useState(0);
+    const [ currentPage, setCurrentPage ] = useState(1);
 
     const { pathname } = useLocation();
 
@@ -151,40 +153,92 @@ const BlogList = () => {
     const PostListing = gql`
         query Query($inputData: PostListingInput) {
             PostListing(inputData: $inputData) {
-                id
-                title
-                content
-                status
-                short_preview_content
+                metadata {
+                   page
+                   limit
+                   total_count
+                }
+                posts {
+                  title
+                  status
+                  content
+                  id
+                  short_preview_content
+                }
             }
         }
     `;
     const [ createBlogPost, { data, loading, error: createPostError } ] = useMutation(CREATE_BLOG_POST);
 
-    const { data: postListingData, loading: postListingLoading, error: postListingError } = useQuery(PostListing, {
-        variables: {
-            inputData: {
-                status: 'ACTIVE',
-            }
-        },
-        fetchPolicy: 'no-cache'
-        // fetchPolicy: 'network-only'
-    });
-    // console.log("LIST: ", postListingData)
+    // const { data: postListingData, loading: postListingLoading, error: postListingError } = useQuery(PostListing, {
+    //     variables: {
+    //         inputData: {
+    //             status: 'ACTIVE',
+    //             page: currentPage,
+    //             limit: 1
+    //         }
+    //     },
+    //     fetchPolicy: 'no-cache'
+    //     // fetchPolicy: 'network-only'
+    // });
+
+    const [ fetchMorePosts, { data: morePostListingData, error: morepostListingError } ] = useLazyQuery(PostListing);
+    
 
     useEffect(() => {
-        if (postListingData && postListingData.PostListing) {
-            setAllPosts((prevPosts) => [...prevPosts, ...postListingData.PostListing]);
+        const morePosts = async () => {
+            const response = await fetchMorePosts({
+                variables: {
+                    inputData: {
+                        status: 'ACTIVE',
+                        page: 1, 
+                        limit: 1
+                    }
+                },
+                fetchPolicy: 'no-cache'
+            });
+            if( response?.data?.PostListing ) {
+                const { metadata, posts } = response.data.PostListing;
+                console.log("Posts: ", AllPosts);
+                setAllPosts([...posts]);
+                setCurrentTotalCount((prevValue) => {
+                    console.log("Prev Value: ", prevValue, "Posts Length: ", posts.length);
+                    return prevValue + posts.length;
+                });
+                setListingMetadata(() => metadata.total_count);
+                // setCurrentPage((prevPage) => prevPage + 1);
+                
+            }
         }
-        if (postListingError) {
-            makeToast("Error fetching blog posts", "error");
-            return;
-        }
-        
+        morePosts();
+
         return () => {
-            setAllPosts([]);
+            setAllPosts([])
+            setCurrentTotalCount(0);
+            setListingMetadata(0);
+            setCurrentPage(1);
         }
-    }, [ postListingData, postListingError]);
+    },[])
+
+    // useEffect(() => {
+    //     if (postListingData && postListingData.PostListing.posts) {
+    //         setAllPosts((prevPosts) => [...prevPosts, ...postListingData.PostListing.posts]);
+
+    //         setCurrentTotalCount((prevValue) => {
+    //             return prevValue + postListingData.PostListing.posts.length;
+    //         });
+
+    //         setListingMetadata(postListingData?.PostListing?.metadata.total_count);
+    //     }
+    //     if (postListingError) {
+    //         makeToast("Error fetching blog posts", "error");
+    //         return;
+    //     }
+        
+    //     return () => {
+    //         setAllPosts([]);
+    //     }
+    // }, [ postListingData, postListingError]);
     
 
     /**
@@ -237,6 +291,30 @@ const BlogList = () => {
         setPostEditOpen(index)
         // console.log("INDEX : ", index)
         // console.log("postEditOpen", postEditOpen)
+    }
+
+    const handleLoadMore = async (e)=> {
+        console.log("Current page: ", currentPage);
+        const response = await fetchMorePosts({
+                variables: {
+                    inputData: {
+                        status: 'ACTIVE',
+                        page: currentPage + 1, 
+                        limit: 1
+                    }
+                },
+                fetchPolicy: 'no-cache'
+            });
+        if( response?.data?.PostListing ) {
+            const { metadata, posts } = response.data.PostListing;
+            setAllPosts((prevPosts) => [...prevPosts, ...posts]);
+            setCurrentTotalCount((prevValue) => {
+                console.log("Prev Value: ", prevValue, "Posts Length: ", posts.length);
+                return prevValue + posts.length;
+            });
+            setListingMetadata(() => metadata.total_count);
+            setCurrentPage((prevPage) => prevPage + 1);
+        }
     }
 
     return (
@@ -342,6 +420,22 @@ const BlogList = () => {
                     </div>
                 ))}
             </div>
+            
+            { listingMetadata }
+            <br />
+            { currentTotalCount }
+            {
+                listingMetadata > currentTotalCount ?
+                <div className='flex items-center justify-center my-5'>
+                    <button onClick={()=> {handleLoadMore()}} className='bg-[#64E09A] text-[#242424] py-2 px-4 border border-[#64E09A] hover:border-transparent rounded'>Load More</button>
+                </div>
+                :
+                null
+            }
+
+            {/* <div className='flex items-center justify-center my-5'>
+                <button onClick={handleLoadMore} className='bg-[#64E09A] text-[#242424] py-2 px-4 border border-[#64E09A] hover:border-transparent rounded'>Load More</button>
+            </div> */}
         </div>
     );
 }
