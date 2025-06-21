@@ -1,18 +1,21 @@
 import { NavLink } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { gql, useLazyQuery } from "@apollo/client";
 
 const Experienc = ({experienceData}) => {
+    console.log("Experience Data: ", experienceData);
     return (
         
         <div className="main-container my-5">
             <div className="flex items-center justify-center">
-                <div className="flex flex-col items-center justify-center w-[30%]">
-                    <NavLink to={experienceData.website}><h1 className="text-[#00DF9A]">{experienceData.company}</h1></NavLink>
+                <div className="flex flex-col items-center justify-center w-[20%]">
+                    <NavLink to={experienceData?.website??""}><h1 className="text-[#00DF9A]">{experienceData?.company_name??""}</h1></NavLink>
                     <p><NavLink to={experienceData.website}>Website</NavLink> | <NavLink to={experienceData.linkedin}>Linkedin</NavLink></p>
                     <h4>{"2000 - Present"}</h4>
                     {/* <h4>{"Onsite"}</h4> */}
                 </div>
-                <div className=" border-l-4 pl-4 flex flex-col items-start justify-center w-[70%] ">
-                    <h2 className="my-1 text-2xl"> {experienceData.position} | <span className="text-xs">{"Onsite"}</span></h2>
+                <div className=" border-l-4 pl-4 flex flex-col items-start justify-center w-[80%] ">
+                    <h2 className="my-1 text-2xl"> {experienceData.designation} | <span className="text-xs">{"Onsite"}</span></h2>
                     <div className="flex items-start justify-start">
                         <div className="w-[12%] my-1">
                             <h2 className="w-full text-sm">Tech Skills:</h2>
@@ -25,13 +28,15 @@ const Experienc = ({experienceData}) => {
                     </div>
                     {/* <p className="my-1">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Odio quo placeat ducimus! Non totam quam hic sint omnis vitae repudiandae accusamus? Odio accusantium ullam assumenda corporis, explicabo distinctio deleniti illum?</p> */}
                     <h1 className="text-2xl">Experiences: </h1>
-                    <ul className="list-disc pl-10">
+                    {/* <ul className="list-disc pl-10">
                         {
                             experienceData.description.map((desc, index) => (
                                 <li key={index}>{desc}</li>
                             ))
                         }
-                    </ul>
+                    </ul> */}
+                    <div className='prose text-white p-2 min-w-full' dangerouslySetInnerHTML={ { __html: experienceData?.description }}/>
+                    
                 </div>
             </div>
         </div>
@@ -39,7 +44,59 @@ const Experienc = ({experienceData}) => {
 }
 
 const Experiences = ()=> {
-    const experiences = [
+    const [ profileData, setProfileData ] = useState(null);
+    const [ experiences, setExperiences ] = useState([]);
+
+    const GetProfile = gql`
+        query GetProfile {
+            GetProfile {
+                _id
+                id
+                name
+                email
+                phone
+                designation
+                company
+                experiences {
+                    _id
+                    id
+                    company_name
+                    website_link
+                    designation
+                    start_date
+                    end_date
+                    description
+                    tech_skills
+                    work_place
+                }
+                
+            }
+        }
+    `;
+    const [ fetchProfile, { loading, error, data }] = useLazyQuery(GetProfile);
+
+    useEffect(()=> {
+        try {
+            const fetchData = async ()=> {
+                const response = await fetchProfile({
+                    fetchPolicy: 'no-cache',
+                });
+
+                const { experiences, ...profileData } = response?.data?.GetProfile || {};
+                setProfileData(()=> profileData || null);
+                setExperiences((preValue) => [...preValue, ...experiences] || []);
+            }
+            fetchData()
+
+        }catch(err) {
+            console.error("Error fetching profile data:", err);
+        }
+        return ()=> {
+            console.log("Cleanup function called");
+            setProfileData(null);
+        }
+    }, [])
+    const dummyexperiences = [
         {
             company: "Valt",
             position: "Software Engineer",
@@ -80,6 +137,14 @@ const Experiences = ()=> {
                             ( Experienc({ experienceData: experience }))
                         )
                     }
+                    {/* {
+                        // Array.from({ length: 3 }).map((_, index) => (
+                        //     <Experienc key={index} />
+                        // ))
+                        dummyexperiences.map((experience, index) => 
+                            ( Experienc({ experienceData: experience }))
+                        )
+                    } */}
                 </div>
         </div>
     )
