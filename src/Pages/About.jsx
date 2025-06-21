@@ -8,23 +8,7 @@ const About = ()=>{
                 </div>
                 <div className='main-container flex items-start justify-center '>
                     <div className=''>
-                        <BlogList blogs={ [
-                        {
-                            id: 1,
-                            title: "A Guide to JavaScript Promises",
-                            content: "React Hooks are functions that let you use state and other React features without writing a class."
-                        },
-                        {
-                            id: 2,
-                            title: "A Guide to JavaScript Promises",
-                            content: "Promises are objects that represent the eventual completion (or failure) of an asynchronous operation."
-                        },
-                        {
-                            id: 3,
-                            title: "CSS Grid vs Flexbox",
-                            content: "CSS Grid and Flexbox are both powerful layout systems in CSS, each with its own strengths and use cases."
-                        }
-                    ]}/>
+                        <BlogList />
                     </div>
                     {/**
                      * Tags Section

@@ -4,6 +4,8 @@ import { FaLinkedin, FaGithub, FaYoutube} from 'react-icons/fa6'
 import { PiDevToLogoLight } from 'react-icons/pi'
 import { callApi } from '../Helpers';
 import ProfilePath from '../assets/image/profile.png';
+import { gql, useLazyQuery } from '@apollo/client'
+
 
 const downloadResumeFile = (event)=>{
     const aTag = document.createElement('a');
@@ -27,24 +29,43 @@ const Profile = ()=>{
         image_key: null
     })
 
-    useEffect(()=> {
-        (async()=> {
-            try {
-                const biodata = await callApi('get','bio/info')
-                if (biodata) {
-                    setBioInfo(()=> ({
-                        ...bio_info,
-                        id: biodata.id,
-                        name: biodata.name,
-                        note: biodata.note,
-                        image_key: biodata.image_key
-                    }))
-                }
-            }catch(err){
-                console.log("Err: ", err)
+    const [ profileData, setProfileData ] = useState(null);
+
+    const GetProfile = gql`
+        query GetProfile {
+            GetProfile {
+                id
+                name
+                email
+                phone
+                designation
+                company
+                
             }
-        })()
-    }, [])   
+        }
+    `;
+    const [ fetchProfile, { loading, error, data }] = useLazyQuery(GetProfile);
+
+    useEffect(()=> {
+        try {
+            const fetchData = async ()=> {
+                const response = await fetchProfile({
+                    fetchPolicy: 'no-cache',
+                });
+                console.log("Response from GraphQL:", response);
+                setProfileData(()=> response?.data?.GetProfile || null);
+            }
+            fetchData()
+
+        }catch(err) {
+            console.error("Error fetching profile data:", err);
+        }
+        return ()=> {
+            console.log("Cleanup function called");
+            setProfileData(null);
+        }
+    }, [])
+    
 
 
 
@@ -54,8 +75,8 @@ const Profile = ()=>{
                 <img src={ProfilePath} loading='lazy' alt="profile"  className='object-cover w-full h-full'/>
             </div>
             <div className='flex flex-col justify-item-stretch p-5'>
-                <p className='text-center md:text-left'><span className='text-[#00DF9A]'> as </span><span className='font-bold text-3xl'>{ "Akash Karmokar" }</span></p>
-                <p className='text-center md:text-left'>{designation} @ {organizationName}.</p>
+                <p className='text-center md:text-left'><span className='text-[#00DF9A]'> as </span><span className='font-bold text-3xl'>{ profileData?.name }</span></p>
+                <p className='text-center md:text-left'>{profileData?.designation} @ {profileData?.company}.</p>
                 <div className='text-center md:text-left'>
                     <p>{bio_info.note}</p>
                 </div>
@@ -65,6 +86,9 @@ const Profile = ()=>{
                     <NavLink to={"https://dev.to/akashcsemu"} target='_blank'><PiDevToLogoLight className='text-xl'/></NavLink>
                     <NavLink to={"https://www.youtube.com/@OpenTerminal108"} target='_blank'><FaYoutube className='text-xl'/></NavLink>
                 </div>
+                {/* <div className='text-center md:text-left'>
+                    <p>{profileData?.phone}</p>
+                </div> */}
                 <div className='my-2 flex flex-row gap-3 justify-center mt-2 md:justify-start'>
                     <button onClick={downloadResumeFile} className='p-1 border border-[#00DF9A]  rounded-md'>Resume</button>
                 </div>
