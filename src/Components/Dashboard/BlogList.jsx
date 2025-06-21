@@ -421,9 +421,7 @@ const BlogList = () => {
                 ))}
             </div>
             
-            { listingMetadata }
-            <br />
-            { currentTotalCount }
+            
             {
                 listingMetadata > currentTotalCount ?
                 <div className='flex items-center justify-center my-5'>
