@@ -3,38 +3,30 @@ import { useState, useEffect } from "react";
 import { gql, useLazyQuery } from "@apollo/client";
 
 const Experienc = ({experienceData}) => {
-    console.log("Experience Data: ", experienceData);
     return (
         
         <div className="main-container my-5">
-            <div className="flex items-center justify-center">
+            <div className="flex items-start justify-center">
                 <div className="flex flex-col items-center justify-center w-[20%]">
                     <NavLink to={experienceData?.website??""}><h1 className="text-[#00DF9A]">{experienceData?.company_name??""}</h1></NavLink>
-                    <p><NavLink to={experienceData.website}>Website</NavLink> | <NavLink to={experienceData.linkedin}>Linkedin</NavLink></p>
+                    <p><NavLink to={experienceData.website_link}>Website</NavLink> | <NavLink to={experienceData.linkedin_link}>Linkedin</NavLink></p>
                     <h4>{"2000 - Present"}</h4>
                     {/* <h4>{"Onsite"}</h4> */}
                 </div>
                 <div className=" border-l-4 pl-4 flex flex-col items-start justify-center w-[80%] ">
-                    <h2 className="my-1 text-2xl"> {experienceData.designation} | <span className="text-xs">{"Onsite"}</span></h2>
-                    <div className="flex items-start justify-start">
-                        <div className="w-[12%] my-1">
+                    <h2 className="my-1 text-2xl"> {experienceData.designation} | <span className="text-xs">{experienceData.work_place}</span></h2>
+                    <div className="flex items-center justify-center min-w-[500px]">
+                        <div className="w-[20%] my-1">
                             <h2 className="w-full text-sm">Tech Skills:</h2>
                         </div>
-                        <div className="w-[88%]">
-                            <p>{experienceData.skills}</p>
+                        <div className="w-[80%]">
+                            <p>{experienceData.tech_skills}</p>
                         </div>
                         
 
                     </div>
-                    {/* <p className="my-1">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Odio quo placeat ducimus! Non totam quam hic sint omnis vitae repudiandae accusamus? Odio accusantium ullam assumenda corporis, explicabo distinctio deleniti illum?</p> */}
                     <h1 className="text-2xl">Experiences: </h1>
-                    {/* <ul className="list-disc pl-10">
-                        {
-                            experienceData.description.map((desc, index) => (
-                                <li key={index}>{desc}</li>
-                            ))
-                        }
-                    </ul> */}
+                    
                     <div className='prose text-white p-2 min-w-full' dangerouslySetInnerHTML={ { __html: experienceData?.description }}/>
                     
                 </div>
@@ -44,7 +36,7 @@ const Experienc = ({experienceData}) => {
 }
 
 const Experiences = ()=> {
-    const [ profileData, setProfileData ] = useState(null);
+    const [ profileData, setProfileData ] = useState({});
     const [ experiences, setExperiences ] = useState([]);
 
     const GetProfile = gql`
@@ -62,6 +54,7 @@ const Experiences = ()=> {
                     id
                     company_name
                     website_link
+                    linkedin_link
                     designation
                     start_date
                     end_date
@@ -83,8 +76,14 @@ const Experiences = ()=> {
                 });
 
                 const { experiences, ...profileData } = response?.data?.GetProfile || {};
-                setProfileData(()=> profileData || null);
-                setExperiences((preValue) => [...preValue, ...experiences] || []);
+                setProfileData(()=> profileData || {});
+                setExperiences((preValue) => {
+                    let updatedExperiences = [ ...preValue];
+                    if(experiences) {
+                        updatedExperiences = [...updatedExperiences, ...experiences];
+                    }
+                    return updatedExperiences
+                });
             }
             fetchData()
 

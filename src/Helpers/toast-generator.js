@@ -2,7 +2,7 @@ import { toast } from "react-toastify";
 
 const generateToast = async (toastMessage,updatedOptions = {} )=>{
     let options = {
-        position: "top-right",
+        position: "bottom-left",
         autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,
@@ -15,7 +15,7 @@ const generateToast = async (toastMessage,updatedOptions = {} )=>{
         options = updatedOptions;
     }
     const messageToShow = toastMessage.trim();
-    toast(messageToShow,options);
+    toast(messageToShow,{...options, position: "bottom-left"});
 }
 
 export default generateToast;
