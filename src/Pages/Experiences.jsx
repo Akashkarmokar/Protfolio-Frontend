@@ -8,7 +8,7 @@ const Experienc = ({experienceData}) => {
         <div className="main-container my-5">
             <div className="flex items-start justify-center">
                 <div className="flex flex-col items-center justify-center w-[20%]">
-                    <NavLink to={experienceData?.website??""}><h1 className="text-[#00DF9A]">{experienceData?.company_name??""}</h1></NavLink>
+                    <NavLink target="_blank" to={experienceData?.website_link??""}><h1 className="text-[#00DF9A]">{experienceData?.company_name??""}</h1></NavLink>
                     <p><NavLink to={experienceData.website_link}>Website</NavLink> | <NavLink to={experienceData.linkedin_link}>Linkedin</NavLink></p>
                     <h4>{"2000 - Present"}</h4>
                     {/* <h4>{"Onsite"}</h4> */}
