@@ -5,15 +5,14 @@ import { makeToast } from "../Helpers";
 
 const Navbar = ()=>{
     const { pathname } = useLocation();
-    // console.log("Pathname: ", pathname);
-    const { isUserLoggedIn,setIsLooggedIn,setUserDetails  } = useAuth()
+    const { userInfo, UserInfoHandler } = useAuth();
+    const { role } = userInfo;
 
     const AppMode = import.meta.env.VITE_REACT_APP_MODE 
 
     const HandleLogoutAction = ()=> {
-        Cookies.remove('token')
-        setIsLooggedIn(false)
-        setUserDetails(null)
+        // Cookies.remove('_token')
+        UserInfoHandler();
         makeToast("Log out succesfully !!")
 
     }
@@ -53,12 +52,15 @@ const Navbar = ()=>{
                                 { pathname === '/dashboard' ? <h1 className="text-center text-[#00DF9A]">^</h1> : null}
                             </div>  
                         }
-                        { isUserLoggedIn === true ? 
+                        {   
+                            role === "ADMIN" 
+                            ? 
                             <div className="flex flex-col">
                                 <NavLink to="/" className="mx-1" onClick={HandleLogoutAction}>Logout</NavLink>
-                            </div> : null
+                            </div> : 
+                            null
                         }
-                        { 
+                        {/* { 
                             AppMode === 'development' && 
                             isUserLoggedIn === false ? 
                             <div className="flex flex-col">
@@ -71,7 +73,7 @@ const Navbar = ()=>{
                             <div className="flex flex-col">
                                 <NavLink to="/signup" className="mx-1">Signup</NavLink>
                             </div> : null
-                        }
+                        } */}
                         
                     </div>
 

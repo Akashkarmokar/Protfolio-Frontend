@@ -14,37 +14,63 @@ import { callApi } from './Helpers'
 
 const App = ()=> {
 
-    const [ isLooggedIn, setIsLooggedIn ] = useState(true)
-    const [ userDetails, setUserDetails ] = useState(null)
+    // const [ isLooggedIn, setIsLooggedIn ] = useState(true)
+    // const [ userDetails, setUserDetails ] = useState(null)
     
-    useEffect(()=> {
-      const token = Cookies.get('token')
+    // useEffect(()=> {
+    //   const token = Cookies.get('token')
       
-      if (token){
-        const CheckToken = async ()=> {
-          const RequestBody = {
-            token: token
-          }
-          const data = await callApi('post','auth/check-token',RequestBody)
-          if(data==true) {
-            const UserDetails = jwtDecode(token)
-            setIsLooggedIn(true);
-            setUserDetails(UserDetails)
-          }
+    //   if (token){
+    //     const CheckToken = async ()=> {
+    //       const RequestBody = {
+    //         token: token
+    //       }
+    //       const data = await callApi('post','auth/check-token',RequestBody)
+    //       if(data==true) {
+    //         const UserDetails = jwtDecode(token)
+    //         setIsLooggedIn(true);
+    //         setUserDetails(UserDetails)
+    //       }
           
-        }
+    //     }
         
-        CheckToken();
+    //     CheckToken();
+    //   }
+    // },[isLooggedIn])
+    // const AuthDetails = {
+    //   isUserLoggedIn : isLooggedIn,
+    //   setUserLoggedIn: setIsLooggedIn,
+    //   userDetails: userDetails,
+    //   setUserDetails: setUserDetails
+    // }
+
+    const [ userInfo, setUserInfo ] = useState({
+      role: "USER"
+    })
+
+    useEffect(()=> {
+      /**
+       * Send Cookie To Server and get authentication response from authorization api. Let's 
+       * say this is "ADMIN" or "USER"
+       */
+      const api_return_data = {
+        role: "ADMIN"
+      };
+
+      setUserInfo((preValue) => ({...preValue, ...api_return_data}));
+      
+    }, [userInfo])
+
+    const UserInfoHandler = ()=> {
+      const resetUserInfo = {
+        role: "USER"
       }
-    },[isLooggedIn])
-    const AuthDetails = {
-      isUserLoggedIn : isLooggedIn,
-      setUserLoggedIn: setIsLooggedIn,
-      userDetails: userDetails,
-      setUserDetails: setUserDetails
+      setUserInfo((preValue) => ({...preValue, ...resetUserInfo} ))
+      Cookies.remove('_token')
     }
+
     return (
-        <AuthContext.Provider value = {AuthDetails}>
+        <AuthContext.Provider value = { { userInfo, UserInfoHandler} }>
           <div className='main-container pb-10'>
             <Navbar/>
             <Routes>
