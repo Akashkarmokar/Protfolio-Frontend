@@ -87,11 +87,12 @@ const App = ()=> {
               <Route path='/blog/:id' element={<BlogDetails/>}/> */}
 
               {/* Private Routes */}
-              <Route path='/*' element={<PrivateOutlet/>} >
+              {/* <Route path='/*' element={<PrivateOutlet/>} >
                 <Route path='dashboard' element={<Dashboard/>}/>
-              </Route>
+              </Route> */}
 
               {/* Restricted Route for LoggedIn user */}
+              <Route path='/dashboard' element={<PrivateOutletRestriction><Dashboard/></PrivateOutletRestriction>}/>
               <Route path='/signin' element={<PrivateOutletRestriction><Signin/></PrivateOutletRestriction>}/>
               {<Route path='/signup' element={<PrivateOutletRestriction><Signup/></PrivateOutletRestriction>}/>}
 

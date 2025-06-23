@@ -1,6 +1,5 @@
 import NotFoundImage from '../assets/image/Not_Found_Page.jpg'
 const NotFound = ()=>{
-    console.log
     return (
         <div className="main-container">
             <div className="flex items-center justify-center md:h-screen">
