@@ -9,57 +9,60 @@ import { useState, useEffect } from 'react'
 import Cookies from 'js-cookie'
 import { jwtDecode } from 'jwt-decode'
 import { callApi } from './Helpers'
+import { useMutation, gql } from '@apollo/client'
 
+
+
+
+const AuthenticationGQL = gql`
+  mutation Authentication($inputData: AuthenticationInput) {
+    Authentication(inputData: $inputData) {
+      role
+    }
+  }
+`;
 
 
 const App = ()=> {
-
-    // const [ isLooggedIn, setIsLooggedIn ] = useState(true)
-    // const [ userDetails, setUserDetails ] = useState(null)
-    
-    // useEffect(()=> {
-    //   const token = Cookies.get('token')
-      
-    //   if (token){
-    //     const CheckToken = async ()=> {
-    //       const RequestBody = {
-    //         token: token
-    //       }
-    //       const data = await callApi('post','auth/check-token',RequestBody)
-    //       if(data==true) {
-    //         const UserDetails = jwtDecode(token)
-    //         setIsLooggedIn(true);
-    //         setUserDetails(UserDetails)
-    //       }
-          
-    //     }
-        
-    //     CheckToken();
-    //   }
-    // },[isLooggedIn])
-    // const AuthDetails = {
-    //   isUserLoggedIn : isLooggedIn,
-    //   setUserLoggedIn: setIsLooggedIn,
-    //   userDetails: userDetails,
-    //   setUserDetails: setUserDetails
-    // }
 
     const [ userInfo, setUserInfo ] = useState({
       role: "USER"
     })
 
+    
+    const [ Authenticator, { loading, error, data }] = useMutation(AuthenticationGQL)
     useEffect(()=> {
-      /**
-       * Send Cookie To Server and get authentication response from authorization api. Let's 
-       * say this is "ADMIN" or "USER"
-       */
-      const api_return_data = {
-        role: "ADMIN"
-      };
-
-      setUserInfo((preValue) => ({...preValue, ...api_return_data}));
+      try {
+        const token = Cookies.get('_token');
+        if (token) {
+          const getAuthentication = async () => {
+              try {
+                const response = await Authenticator({
+                  variables: {
+                    inputData: {
+                      token: Cookies.get('_token')
+                    }
+                  }
+                });
+                console.log("Response from Authentication API:", response);
+                if (response.data && response.data.Authentication) {
+                  const { role } = response.data.Authentication;
+                  setUserInfo((preValue) => ({ ...preValue, role: role }));
+                }else {
+                  setUserInfo((preValue) => ({ ...preValue, role: "USER" }));
+                }
+              }catch (error) {
+                setUserInfo((preValue) => ({ ...preValue, role: "USER" }));
+              }
+          };
+          getAuthentication();
+        }
+        
+      }catch (error) {
+        console.error("Error in useEffect:", error);
+      }
       
-    }, [userInfo])
+    }, [])
 
     const UserInfoHandler = ()=> {
       const resetUserInfo = {

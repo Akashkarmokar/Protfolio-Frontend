@@ -47,10 +47,14 @@ const Navbar = ()=>{
                             }
                         </div>
                         {
+                            role === "ADMIN"
+                            ?
                             <div className="flex flex-col">
                                 <NavLink to="/dashboard" className="mx-1">Dashboard</NavLink>
                                 { pathname === '/dashboard' ? <h1 className="text-center text-[#00DF9A]">^</h1> : null}
-                            </div>  
+                            </div>
+                            :
+                            null  
                         }
                         {   
                             role === "ADMIN" 

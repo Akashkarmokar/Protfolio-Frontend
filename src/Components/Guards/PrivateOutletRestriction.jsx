@@ -4,6 +4,11 @@ import { useAuth } from '../../Hooks'
 const PrivateOutletRestriction = ({children})=>{
     // return children
     const { userInfo , UserInfoHandler } = useAuth();
+    const { pathname } = useLocation();
+    console.log("PrivateOutletRestriction", userInfo, pathname);
+    if (pathname === "/signin" && userInfo.role === "USER") {
+        return children;
+    }
     return userInfo.role === "ADMIN" ? children : <Navigate to="/"/>
 }
 
