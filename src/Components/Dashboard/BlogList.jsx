@@ -5,6 +5,50 @@ import { useLocation, NavLink } from "react-router-dom";
 import MultiSelectDropdown from '../MultiselectDropDownWithCheckBox.jsx';
 import { gql, useMutation, useQuery, useLazyQuery } from '@apollo/client'; 
 import { makeToast } from '../../Helpers/index.js';
+import { useAuth } from '../../Hooks/index.js';
+
+const CREATE_BLOG_POST = gql`
+    mutation Mutation($inputData: CreatePostInput) {
+        CreatePost(inputData: $inputData) {
+            id
+            title
+            content
+            status
+        }
+    }
+`;
+
+const PostListing = gql`
+    query Query($inputData: PostListingInput) {
+        PostListing(inputData: $inputData) {
+            metadata {
+                page
+                limit
+                total_count
+            }
+            posts {
+                title
+                status
+                content
+                id
+                short_preview_content
+            }
+        }
+    }
+`;
+
+const UpdatePostMutation = gql`
+    mutation Mutation($inputData: UpdatePostInput) {
+        UpdatePost(inputData: $inputData) {
+            content
+            id
+            short_preview_content
+            status
+            title
+        }
+    }  
+`;
+
 
 
 const PostEdit = ({ blogDetails, setAllPosts, setModalClose })=> {
@@ -19,17 +63,7 @@ const PostEdit = ({ blogDetails, setAllPosts, setModalClose })=> {
             // console.log("Post Edit Modal Unmount Fn Called !!")
         }
     }, [])
-    const UpdatePostMutation = gql`
-        mutation Mutation($inputData: UpdatePostInput) {
-            UpdatePost(inputData: $inputData) {
-                content
-                id
-                short_preview_content
-                status
-                title
-            }
-        }  
-    `;
+    
     const [ updatePostContent, { data:PostUpdatedData, loading:doesPostUpdateOnLoad, error: postUpdateError }] = useMutation(UpdatePostMutation); 
 
 
@@ -135,52 +169,16 @@ const BlogList = () => {
     const [ listingMetadata, setListingMetadata ] = useState(0);
     const [ currentPage, setCurrentPage ] = useState(1);
 
+    /**
+     * Locaton Hook to get the current pathname
+     */
     const { pathname } = useLocation();
 
-
+    const { userInfo, UserInfoHandler } = useAuth();
+    const { role } = userInfo;
     
-    const CREATE_BLOG_POST = gql`
-        mutation Mutation($inputData: CreatePostInput) {
-            CreatePost(inputData: $inputData) {
-                id
-                title
-                content
-                status
-            }
-        }
-    `;
-
-    const PostListing = gql`
-        query Query($inputData: PostListingInput) {
-            PostListing(inputData: $inputData) {
-                metadata {
-                   page
-                   limit
-                   total_count
-                }
-                posts {
-                  title
-                  status
-                  content
-                  id
-                  short_preview_content
-                }
-            }
-        }
-    `;
+    
     const [ createBlogPost, { data, loading, error: createPostError } ] = useMutation(CREATE_BLOG_POST);
-
-    // const { data: postListingData, loading: postListingLoading, error: postListingError } = useQuery(PostListing, {
-    //     variables: {
-    //         inputData: {
-    //             status: 'ACTIVE',
-    //             page: currentPage,
-    //             limit: 1
-    //         }
-    //     },
-    //     fetchPolicy: 'no-cache'
-    //     // fetchPolicy: 'network-only'
-    // });
 
     const [ fetchMorePosts, { data: morePostListingData, error: morepostListingError } ] = useLazyQuery(PostListing);
     
@@ -320,12 +318,12 @@ const BlogList = () => {
     return (
         <div className="flex-col justify-center items-start">
             {
-                pathname === '/dashboard'
+                role === 'ADMIN'
                 ?
                 <div className="flex justify-between items-center mb-6">
                 {/* <h2 className="text-2xl font-bold mb-4">Blog List</h2> */}
                 {
-                    pathname === '/dashboard'  // This logic should be adjust after authentication is implemented
+                    role === 'ADMIN' // This logic should be adjust after authentication is implemented
                     ? 
                     <button
                         className="bg-transparent text-2xl font-semibold hover:bg-[#64E09A] hover:text-[#242424] py-2 px-4 border border-[#64E09A] hover:border-transparent rounded"
@@ -399,14 +397,21 @@ const BlogList = () => {
                         <div className='prose text-white p-2 min-w-full' dangerouslySetInnerHTML={ { __html: blog?.short_preview_content ?? "" }}/>
 
                         {/* <div className='prose text-white p-2 min-w-full' dangerouslySetInnerHTML={ { __html: blog.content }}/> */}
-                        <div className='flex items-start justify-end'>
-                            <button 
-                                onClick={ (e)=> { handlePostEdit(e, blog, index + 1 ) }}
-                                className='p-2 rounded border'
-                            >
-                                Edit
-                            </button>
-                        </div>
+                        {
+                            role === "ADMIN"
+                            ?
+                            <div className='flex items-start justify-end'>
+                                <button 
+                                    onClick={ (e)=> { handlePostEdit(e, blog, index + 1 ) }}
+                                    className='p-2 rounded border'
+                                >
+                                    Edit
+                                </button>
+                            </div>
+                            :
+                            null
+                        }
+                        
                         {
                             postEditOpen == index + 1
                             ?
