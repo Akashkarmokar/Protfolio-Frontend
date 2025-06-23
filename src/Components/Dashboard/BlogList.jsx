@@ -190,7 +190,7 @@ const BlogList = () => {
                     inputData: {
                         status: 'ACTIVE',
                         page: 1, 
-                        limit: 1
+                        limit: 10
                     }
                 },
                 fetchPolicy: 'no-cache'
@@ -318,12 +318,12 @@ const BlogList = () => {
     return (
         <div className="flex-col justify-center items-start">
             {
-                role === 'ADMIN'
+                pathname === '/dashboard'
                 ?
                 <div className="flex justify-between items-center mb-6">
                 {/* <h2 className="text-2xl font-bold mb-4">Blog List</h2> */}
                 {
-                    role === 'ADMIN' // This logic should be adjust after authentication is implemented
+                    pathname === '/dashboard' // This logic should be adjust after authentication is implemented
                     ? 
                     <button
                         className="bg-transparent text-2xl font-semibold hover:bg-[#64E09A] hover:text-[#242424] py-2 px-4 border border-[#64E09A] hover:border-transparent rounded"
