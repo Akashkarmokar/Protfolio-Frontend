@@ -1,12 +1,17 @@
+import './index.css'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import App from './App.jsx'
-import './index.css'
 import { BrowserRouter } from 'react-router-dom'
+import App from './App.jsx'
 
 import { ApolloClient, InMemoryCache, ApolloProvider,createHttpLink, HttpLink, from} from '@apollo/client'
 import { setContext } from '@apollo/client/link/context';
+
 import Cookies from 'js-cookie';
+import { API_URL, ENVIRONMENT } from "./config.js";
+
+
+
 // const client = new ApolloClient({
 //   uri: "http://localhost:3000/graphql",
 //   cache: new InMemoryCache(),
@@ -32,7 +37,7 @@ import Cookies from 'js-cookie';
 // })
 
 const httpLink = createHttpLink({
-  uri: 'http://localhost:3000/graphql',
+  uri: API_URL,
 });
 
 const authLink = setContext((_, { headers }) => {
