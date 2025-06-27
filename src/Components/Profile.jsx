@@ -76,7 +76,7 @@ const Profile = ()=>{
             </div>
             <div className='flex flex-col justify-item-stretch p-5'>
                 <p className='text-center md:text-left'><span className='text-[#00DF9A]'> as </span><span className='font-bold text-3xl'>{ profileData?.name }</span></p>
-                <p className='text-center md:text-left'>{profileData?.designation} @ {profileData?.company}.</p>
+                <p className='text-center md:text-left'>{profileData?.designation} @ {profileData?.company}</p>
                 <div className='text-center md:text-left'>
                     <p>{bio_info.note}</p>
                 </div>
