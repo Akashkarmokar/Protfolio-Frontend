@@ -47,6 +47,7 @@ const AuthCallback = ()=> {
                 authorizer()
             }
         }catch (error) {
+            console.log("ERROR: ", error)
             makeToast("Something went wrong during authorization. Please try again later.");
         }
         
