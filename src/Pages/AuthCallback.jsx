@@ -38,7 +38,7 @@ const AuthCallback = ()=> {
                         if(token) {
                             Cookies.set('_token', token, { expires: 7 });
                             makeToast("Authorization successful. Redirecting...");
-                            // window.location.href = "/dashboard";
+                            window.location.href = "/dashboard";
                         }
                         
                     } else {
