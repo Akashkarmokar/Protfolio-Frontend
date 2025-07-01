@@ -250,6 +250,7 @@ import MenuBar from './MenuBar'
 import Underline from '@tiptap/extension-underline'
 import CodeBlock from '@tiptap/extension-code-block'
 import Placeholder from '@tiptap/extension-placeholder'
+import Bold from '@tiptap/extension-bold'
 
 const RichTextEditor = ( { initialContent, setInitialContent, doesShowMenuBar = true, height = "min-h-[100px]" }) => {
   const editor = useEditor({
@@ -277,7 +278,12 @@ const RichTextEditor = ( { initialContent, setInitialContent, doesShowMenuBar = 
           },
           // languageClassPrefix: 'language-go',
           // defaultLanguage: 'plaintext',
-        }
+        },
+        // bold: {
+        //   HTMLAttributes: {
+        //     class: 'font-bold'
+        //   }
+        // }
       }),
       // TextAlign.configure({
       //   types: ['heading', 'paragraph'],
@@ -297,7 +303,13 @@ const RichTextEditor = ( { initialContent, setInitialContent, doesShowMenuBar = 
       // }),
       Placeholder.configure({
         placeholder: "Short Preview Of Your content"
+      }),
+      Bold.configure({
+        HTMLAttributes: {
+          class: 'font-bold text-[#00DF9A]'
+        }
       })
+
     ],
     content: initialContent,
     editorProps: {
