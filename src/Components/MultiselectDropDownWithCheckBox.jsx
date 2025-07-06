@@ -96,8 +96,7 @@ export default function MultiSelectDropdown( { setItems }) {
         });
         if(response.data.CreateTag) {
           makeToast("Tag Created Successfully")
-          const { title } = response.data.CreateTag;
-          setOptionsList(prev => [...prev, title])
+          // setOptionsList(prev => [...prev, CreateTag])
           setSearch("")
         }
       }
