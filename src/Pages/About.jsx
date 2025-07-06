@@ -74,7 +74,7 @@ const About = ()=>{
                         tagList.length ?
 
                         <div className='ml-5 flex flex-col items-center justify-center rounded-md border '>
-                            <h2 className='text-2xl font-bold'>Tags</h2>
+                            <h2 className='text-2xl font-bold'>Selected Tags {selectedTag.length ? selectedTag.length : 0}</h2>
                             <div className='m-2'>
                                 <ul className='flex flex-row gap-2 items-center justify-start flex-wrap'>
                                     { 
