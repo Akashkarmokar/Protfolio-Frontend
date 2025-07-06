@@ -14,6 +14,10 @@ const BlogDetails = ()=>{
                 title
                 content
                 status
+                tags {
+                    _id
+                    title
+                }
             }
         }
     `
@@ -50,6 +54,8 @@ const BlogDetails = ()=>{
                             {/* <p className=" p-2 text-white-600">{blog.content}</p> */}
                             
                         </NavLink>
+                        <p className='ml-2 space-x-2'> { singleBlog?.tags.map(val=> val.title.charAt(0).toUpperCase() + val.title.slice(1)).join(", ")}</p>
+
                     </div>
                 </div>
                 <div className='p-5'>
