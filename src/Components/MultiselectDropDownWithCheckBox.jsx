@@ -23,7 +23,7 @@ const CreateTag = gql`
   }
 `
 
-export default function MultiSelectDropdown( { setItems }) {
+export default function MultiSelectDropdown( { setItems, givenOptionList}) {
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [selected, setSelected] = useState([]);
@@ -38,21 +38,26 @@ export default function MultiSelectDropdown( { setItems }) {
   const toggleDropdown = () => setIsOpen(!isOpen);
 
   const handleSelect = (option) => {
-    // setSelected((prev) =>
-    //   prev.includes(option) ? prev.filter((item) => item !== option) : [...prev, option]
-    // );
+    
     setSelected(prev => prev.findIndex((each_option)=> each_option._id == option._id ) != -1 ? prev.filter(item => item._id !== option._id) : [ ...prev, option] )
-    /**
-     * It setItems all will be _id just
-     */
-    setItems(prev => prev.findIndex((each_id)=> each_id == option._id ) != -1 ? prev.filter(item => item !== option._id ) : [ ...prev, option._id ] )
+    
+    setItems(prev => {
+      console.log("PREV: ", prev)
+      return prev.findIndex((each_id)=> each_id == option._id ) != -1 ? prev.filter(item => item !== option._id ) : [ ...prev, option._id ] 
+    })
 
   };
 
   const filteredOptions = optionsList.filter((opt) =>
     opt.title.toLowerCase().includes(search.toLowerCase())
   );
-
+  useEffect(() => {
+    if(givenOptionList && Array.isArray(givenOptionList) && givenOptionList.length > 0) {
+      givenOptionList.forEach((item)=> {
+        handleSelect(item)
+      })
+    }
+  }, []);
   // Close dropdown on outside click
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -78,6 +83,7 @@ export default function MultiSelectDropdown( { setItems }) {
         }
       }
       GetTags()
+      
     }catch(err){
       console.log("ERROR: ", err)
     }
@@ -134,7 +140,9 @@ export default function MultiSelectDropdown( { setItems }) {
             >
               <input
                 type="checkbox"
-                checked={selected.includes(option)}
+                // checked={selected.includes(option)}
+                checked={ selected.findIndex((item)=> item._id == option._id) !== -1 }
+
                 onChange={() => handleSelect(option)}
                 className="mr-2"
               />
