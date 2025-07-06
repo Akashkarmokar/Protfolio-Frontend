@@ -84,14 +84,14 @@ const Profile = ()=>{
                     <NavLink to={"https://www.linkedin.com/in/akashcsemu/"} target='_blank'><FaLinkedin className='text-xl'/></NavLink>
                     <NavLink to={"https://github.com/Akashkarmokar"} target='_blank'><FaGithub className='text-xl'/></NavLink>
                     <NavLink to={"https://dev.to/akashcsemu"} target='_blank'><PiDevToLogoLight className='text-xl'/></NavLink>
-                    <NavLink to={"https://www.youtube.com/@OpenTerminal108"} target='_blank'><FaYoutube className='text-xl'/></NavLink>
+                    {/* <NavLink to={"https://www.youtube.com/@OpenTerminal108"} target='_blank'><FaYoutube className='text-xl'/></NavLink> */}
                 </div>
                 {/* <div className='text-center md:text-left'>
                     <p>{profileData?.phone}</p>
                 </div> */}
-                <div className='my-2 flex flex-row gap-3 justify-center mt-2 md:justify-start'>
+                {/* <div className='my-2 flex flex-row gap-3 justify-center mt-2 md:justify-start'>
                     <button onClick={downloadResumeFile} className='p-1 border border-[#00DF9A]  rounded-md'>Resume</button>
-                </div>
+                </div> */}
             </div>
         </div>
     )
