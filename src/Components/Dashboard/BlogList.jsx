@@ -171,7 +171,7 @@ const BlogList = ({ selectedTags }) => {
     const [ short_preview_content, set_short_preview_content ] = useState('');
     const [ contentTitle, setContentTitle ] = useState(''); 
     const [ AllPosts, setAllPosts ] = useState([]);
-    const [ selectedStatus, setSelectedStatus ] = useState(null);
+    const [ selectedStatus, setSelectedStatus ] = useState('DRAFT');
     const [ postEditOpen, setPostEditOpen ] = useState(-1);
     const [ currentTotalCount, setCurrentTotalCount ] = useState(0);
     const [ listingMetadata, setListingMetadata ] = useState(0);
