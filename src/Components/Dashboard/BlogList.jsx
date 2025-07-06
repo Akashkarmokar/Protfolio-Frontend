@@ -49,6 +49,10 @@ const UpdatePostMutation = gql`
             short_preview_content
             status
             title
+            tags {
+                _id
+                title
+            }
         }
     }  
 `;
@@ -77,17 +81,17 @@ const PostEdit = ({ blogDetails, setAllPosts, setModalClose })=> {
                 inputData: {
                     id: blogDetails.id,
                     title: contentTitle,
-                    content: content
+                    content: content,
+                    status: selectedStatus
                 }
             }})
-            // console.log("RES: ", response)
-            if(response?.data){
+            if(response?.data?.UpdatePost){
                 setAllPosts((preValue)=> {
                     const idx = preValue.findIndex((value)=> {
                         // console.log("stat id: ", value.id, "updated value id: ", response?.data?.UpdatePost?.id)
                         return value.id === response?.data?.UpdatePost?.id
                     })
-                    // console.log("Index: ", idx)
+                    
                     if(idx !== -1) {
                         preValue.splice(idx, 1, {...response?.data?.UpdatePost });
                         return preValue;
@@ -174,6 +178,9 @@ const BlogList = ({ selectedTags }) => {
     const [ currentPage, setCurrentPage ] = useState(1);
     const [tags, setTags] = useState([]);
 
+
+    const [ listingStatus , setListingStatus ] = useState('ACTIVE');
+
     /**
      * Locaton Hook to get the current pathname
      */
@@ -189,10 +196,9 @@ const BlogList = ({ selectedTags }) => {
     
 
     useEffect(() => {
-        console.log("User Effect Called")
         const morePosts = async () => {
             const inputData  = {
-                status: 'ACTIVE',
+                status: listingStatus,
                 page: 1, 
                 limit: 10
             }
@@ -229,7 +235,7 @@ const BlogList = ({ selectedTags }) => {
             setListingMetadata(0);
             setCurrentPage(1);
         }
-    },[selectedTags])
+    },[selectedTags, listingStatus])
 
     
     
@@ -321,11 +327,26 @@ const BlogList = ({ selectedTags }) => {
                 {
                     pathname === '/dashboard' // This logic should be adjust after authentication is implemented
                     ? 
+                    
+                    <select onChange={(e)=> setListingStatus(e.target.value)} className='border border-[#64E09A] bg-transparent rounded' name="status" id="status">
+                        <option className='bg-white text-black' value="ACTIVE">Active</option>
+                        <option className='bg-white text-black' value="DRAFT" >Draft</option>
+                        <option className= 'bg-white text-black' value="INACTIVE">Inactive</option>
+                    </select>
+                    : 
+                    null
+                }
+                {/* {listingStatus} */}
+                {
+                    pathname === '/dashboard' // This logic should be adjust after authentication is implemented
+                    ? 
                     <button
                         className="bg-transparent text-2xl font-semibold hover:bg-[#64E09A] hover:text-[#242424] py-2 px-4 border border-[#64E09A] hover:border-transparent rounded"
                         onClick={() => setOpen(true)}
                     > Create Blog 
-                    </button> : null
+                    </button> 
+                    : 
+                    null
                 }
                 
                 <Modal open = { open } onClose = { ()=> setOpen(false) }>
