@@ -1,15 +1,40 @@
 import React, { useState, useEffect, useRef } from "react";
+import { gql, useLazyQuery, useMutation } from "@apollo/client";
+import { makeToast } from "../Helpers";
 
-const optionsList = [
-  "React", "Vue", "Angular", "Svelte", "Next.js", "Nuxt.js", "Gatsby", "Solid", "Remix"
-];
+
+
+const TagQuery = gql`
+  query TagListing {
+    TagListing {
+      _id
+      title
+    }
+  }
+`
+
+
+const CreateTag = gql`
+  mutation Mutation($inputData: CreateTagInput) {
+    CreateTag(inputData: $inputData) {
+      _id
+      title
+    }
+  }
+`
 
 export default function MultiSelectDropdown() {
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [selected, setSelected] = useState([]);
   const dropdownRef = useRef(null);
+  const [optionsList, setOptionsList] = useState([]);
 
+  const [ Tagsercher, { error, loading, data }] = useLazyQuery(TagQuery, {
+    fetchPolicy: 'no-cache'
+  });  
+
+  const [ CrateTagMutation ] = useMutation(CreateTag);
   const toggleDropdown = () => setIsOpen(!isOpen);
 
   const handleSelect = (option) => {
@@ -32,6 +57,62 @@ export default function MultiSelectDropdown() {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  useEffect(()=> {
+    try {
+      const GetTags = async ()=> {
+        const response = await Tagsercher({
+          variables: {
+            
+          },
+          
+        });
+        if(response.data.TagListing) {
+          setOptionsList((prev)=> [...prev, ...response.data.TagListing.map((val)=>val.title)]);
+        }
+      }
+      GetTags()
+    }catch(err){
+      console.log("ERROR: ", err)
+    }
+  }, []);
+
+
+  const handleSaveTag = (e)=> {
+    try {
+      const createTag = async ()=> {
+        const response = await CrateTagMutation({
+          variables: {
+            inputData: {
+              title: search
+            }
+          }
+        });
+        if(response.data.CreateTag) {
+          makeToast("Tag Created Successfully")
+          const { title } = response.data.CreateTag;
+          setOptionsList(prev => [...prev, title])
+          setSearch("")
+        }
+      }
+      createTag();
+    }catch(err){
+      console.log("ERROR of save Tag: ", err.message);
+    }
+  } 
+
+
+
+  
+
+
+
+
+
+
+
+
+
 
   return (
     <div className="w-full relative" ref={dropdownRef}>
@@ -68,7 +149,10 @@ export default function MultiSelectDropdown() {
           ))}
 
           {filteredOptions.length === 0 && (
-            <div className="px-4 py-2 text-sm text-gray-500">No results found</div>
+            <div>
+              <div className="px-4 py-2 text-sm text-gray-500">No results found</div>
+              <button onClick={handleSaveTag} className="text-black border border-[#000000] rounded-md">Save it</button>
+            </div>
           )}
         </div>
       )}

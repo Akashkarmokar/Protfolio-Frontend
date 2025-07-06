@@ -338,9 +338,9 @@ const BlogList = () => {
                             <input type="text" onChange={(e) => setContentTitle(e.target.value)} value={contentTitle} className=' w-full outline-none ring-0 focus:ring-0 focus:outline-none border bg-transparent  p-2 rounded' placeholder='Content Title' />
                         </div>
                         
-                        {/* <div className='border rounded-md w-full my-5'>
+                        <div className='border rounded-md w-full my-5'>
                             <MultiSelectDropdown/>
-                        </div> */}
+                        </div>
 
                         <div className= "w-full" >
                             <RichTextEditor
