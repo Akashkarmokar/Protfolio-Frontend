@@ -23,7 +23,7 @@ const CreateTag = gql`
   }
 `
 
-export default function MultiSelectDropdown() {
+export default function MultiSelectDropdown( { setItems }) {
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [selected, setSelected] = useState([]);
@@ -38,13 +38,19 @@ export default function MultiSelectDropdown() {
   const toggleDropdown = () => setIsOpen(!isOpen);
 
   const handleSelect = (option) => {
-    setSelected((prev) =>
-      prev.includes(option) ? prev.filter((item) => item !== option) : [...prev, option]
-    );
+    // setSelected((prev) =>
+    //   prev.includes(option) ? prev.filter((item) => item !== option) : [...prev, option]
+    // );
+    setSelected(prev => prev.findIndex((each_option)=> each_option._id == option._id ) != -1 ? prev.filter(item => item._id !== option._id) : [ ...prev, option] )
+    /**
+     * It setItems all will be _id just
+     */
+    setItems(prev => prev.findIndex((each_id)=> each_id == option._id ) != -1 ? prev.filter(item => item !== option._id ) : [ ...prev, option._id ] )
+
   };
 
   const filteredOptions = optionsList.filter((opt) =>
-    opt.toLowerCase().includes(search.toLowerCase())
+    opt.title.toLowerCase().includes(search.toLowerCase())
   );
 
   // Close dropdown on outside click
@@ -68,7 +74,7 @@ export default function MultiSelectDropdown() {
           
         });
         if(response.data.TagListing) {
-          setOptionsList((prev)=> [...prev, ...response.data.TagListing.map((val)=>val.title)]);
+          setOptionsList((prev)=> [...prev, ...response.data.TagListing ]);
         }
       }
       GetTags()
@@ -103,24 +109,13 @@ export default function MultiSelectDropdown() {
 
 
 
-  
-
-
-
-
-
-
-
-
-
-
   return (
     <div className="w-full relative" ref={dropdownRef}>
       <div
         onClick={toggleDropdown}
         className="border border-gray-300 rounded px-4 py-2 cursor-pointer"
       >
-        {selected.length === 0 ? "Select options..." : selected.join(", ")}
+        {selected.length === 0 ? "Select options..." : selected.map(option => option.title).join(", ")}
       </div>
 
       {isOpen && (
@@ -135,7 +130,7 @@ export default function MultiSelectDropdown() {
 
           {filteredOptions.map((option) => (
             <label
-              key={option}
+              key={option._id}
               className="flex items-center px-4 py-2 hover:bg-gray-100 cursor-pointer "
             >
               <input
@@ -144,7 +139,7 @@ export default function MultiSelectDropdown() {
                 onChange={() => handleSelect(option)}
                 className="mr-2"
               />
-              <p className="text-sm text-gray-700 scroll-hide">{option}</p>
+              <p className="text-sm text-gray-700 scroll-hide">{option.title}</p>
             </label>
           ))}
 
