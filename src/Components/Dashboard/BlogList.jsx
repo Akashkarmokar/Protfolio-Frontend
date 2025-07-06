@@ -64,26 +64,26 @@ const PostEdit = ({ blogDetails, setAllPosts, setModalClose })=> {
     const [ short_preview_content, set_short_preview_content ] = useState(blogDetails?.short_preview_content?? "");
     const [ content, setContent ] = useState(blogDetails?.content?? "");
     const [ selectedStatus, setSelectedStatus ] = useState(blogDetails?.status ?? "");
+    const [ tagsOnEdit, setTagsOnEdit ] = useState([])
 
-    useEffect(()=> {
-        // console.log("Modal UseEffect Called !!");
-        return () => {
-            // console.log("Post Edit Modal Unmount Fn Called !!")
-        }
-    }, [])
     
+    console.log("TAG ON EDIT: ", tagsOnEdit)
     const [ updatePostContent, { data:PostUpdatedData, loading:doesPostUpdateOnLoad, error: postUpdateError }] = useMutation(UpdatePostMutation); 
 
 
     const handleSubmitAction = async (e)=> {
         try {
+            const inputData = {
+                id: blogDetails.id,
+                title: contentTitle,
+                content: content,
+                status: selectedStatus
+            };
+            if(tagsOnEdit && Array.isArray(tagsOnEdit) && tagsOnEdit.length > 0 ) {
+                inputData.tags = tagsOnEdit;
+            }
             const response = await updatePostContent({variables: {
-                inputData: {
-                    id: blogDetails.id,
-                    title: contentTitle,
-                    content: content,
-                    status: selectedStatus
-                }
+                inputData: inputData
             }})
             if(response?.data?.UpdatePost){
                 setAllPosts((preValue)=> {
@@ -117,11 +117,11 @@ const PostEdit = ({ blogDetails, setAllPosts, setModalClose })=> {
                     placeholder='Content Title' 
                 />
             </div>
-            {/* <div 
+            <div 
                 className='border rounded-md w-full my-5'
             >
-                <MultiSelectDropdown/>
-            </div> */}
+                <MultiSelectDropdown setItems={setTagsOnEdit} givenOptionList= {blogDetails?.tags}/>
+            </div> 
             <div className= "w-full" >
                 <RichTextEditor
                     initialContent={short_preview_content} 
@@ -410,7 +410,7 @@ const BlogList = ({ selectedTags }) => {
                                 {/* <p className=" p-2 text-white-600">{blog.content}</p> */}
                                 
                             </NavLink>
-                            <p className='ml-2 space-x-2'> { blog.tags.map(val=> val.title.charAt(0).toUpperCase() + val.title.slice(1)).join(", ")}</p>
+                            <p className='ml-2 space-x-2'> { blog?.tags?.map(val=> val?.title?.charAt(0).toUpperCase() + val.title.slice(1)).join(", ")}</p>
                         </div>
                         <div className='prose text-white p-2 min-w-full' dangerouslySetInnerHTML={ { __html: blog?.short_preview_content ?? "" }}/>
 
