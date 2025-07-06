@@ -1,25 +1,56 @@
 import React, { useState, useEffect, useRef } from "react";
+import { gql, useLazyQuery, useMutation } from "@apollo/client";
+import { makeToast } from "../Helpers";
 
-const optionsList = [
-  "React", "Vue", "Angular", "Svelte", "Next.js", "Nuxt.js", "Gatsby", "Solid", "Remix"
-];
 
-export default function MultiSelectDropdown() {
+
+const TagQuery = gql`
+  query TagListing {
+    TagListing {
+      _id
+      title
+    }
+  }
+`
+
+
+const CreateTag = gql`
+  mutation Mutation($inputData: CreateTagInput) {
+    CreateTag(inputData: $inputData) {
+      _id
+      title
+    }
+  }
+`
+
+export default function MultiSelectDropdown( { setItems }) {
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [selected, setSelected] = useState([]);
   const dropdownRef = useRef(null);
+  const [optionsList, setOptionsList] = useState([]);
 
+  const [ Tagsercher, { error, loading, data }] = useLazyQuery(TagQuery, {
+    fetchPolicy: 'no-cache'
+  });  
+
+  const [ CrateTagMutation ] = useMutation(CreateTag);
   const toggleDropdown = () => setIsOpen(!isOpen);
 
   const handleSelect = (option) => {
-    setSelected((prev) =>
-      prev.includes(option) ? prev.filter((item) => item !== option) : [...prev, option]
-    );
+    // setSelected((prev) =>
+    //   prev.includes(option) ? prev.filter((item) => item !== option) : [...prev, option]
+    // );
+    setSelected(prev => prev.findIndex((each_option)=> each_option._id == option._id ) != -1 ? prev.filter(item => item._id !== option._id) : [ ...prev, option] )
+    /**
+     * It setItems all will be _id just
+     */
+    setItems(prev => prev.findIndex((each_id)=> each_id == option._id ) != -1 ? prev.filter(item => item !== option._id ) : [ ...prev, option._id ] )
+
   };
 
   const filteredOptions = optionsList.filter((opt) =>
-    opt.toLowerCase().includes(search.toLowerCase())
+    opt.title.toLowerCase().includes(search.toLowerCase())
   );
 
   // Close dropdown on outside click
@@ -33,13 +64,58 @@ export default function MultiSelectDropdown() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  useEffect(()=> {
+    try {
+      const GetTags = async ()=> {
+        const response = await Tagsercher({
+          variables: {
+            
+          },
+          
+        });
+        if(response.data.TagListing) {
+          setOptionsList((prev)=> [...prev, ...response.data.TagListing ]);
+        }
+      }
+      GetTags()
+    }catch(err){
+      console.log("ERROR: ", err)
+    }
+  }, []);
+
+
+  const handleSaveTag = (e)=> {
+    try {
+      const createTag = async ()=> {
+        const response = await CrateTagMutation({
+          variables: {
+            inputData: {
+              title: search
+            }
+          }
+        });
+        if(response.data.CreateTag) {
+          makeToast("Tag Created Successfully")
+          const { title } = response.data.CreateTag;
+          setOptionsList(prev => [...prev, title])
+          setSearch("")
+        }
+      }
+      createTag();
+    }catch(err){
+      console.log("ERROR of save Tag: ", err.message);
+    }
+  } 
+
+
+
   return (
     <div className="w-full relative" ref={dropdownRef}>
       <div
         onClick={toggleDropdown}
         className="border border-gray-300 rounded px-4 py-2 cursor-pointer"
       >
-        {selected.length === 0 ? "Select options..." : selected.join(", ")}
+        {selected.length === 0 ? "Select options..." : selected.map(option => option.title).join(", ")}
       </div>
 
       {isOpen && (
@@ -54,7 +130,7 @@ export default function MultiSelectDropdown() {
 
           {filteredOptions.map((option) => (
             <label
-              key={option}
+              key={option._id}
               className="flex items-center px-4 py-2 hover:bg-gray-100 cursor-pointer "
             >
               <input
@@ -63,12 +139,15 @@ export default function MultiSelectDropdown() {
                 onChange={() => handleSelect(option)}
                 className="mr-2"
               />
-              <p className="text-sm text-gray-700 scroll-hide">{option}</p>
+              <p className="text-sm text-gray-700 scroll-hide">{option.title}</p>
             </label>
           ))}
 
           {filteredOptions.length === 0 && (
-            <div className="px-4 py-2 text-sm text-gray-500">No results found</div>
+            <div>
+              <div className="px-4 py-2 text-sm text-gray-500">No results found</div>
+              <button onClick={handleSaveTag} className="text-black border border-[#000000] rounded-md">Save it</button>
+            </div>
           )}
         </div>
       )}

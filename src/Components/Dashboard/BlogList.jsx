@@ -32,6 +32,10 @@ const PostListing = gql`
                 content
                 id
                 short_preview_content
+                tags {
+                    _id
+                    title
+                }
             }
         }
     }
@@ -155,7 +159,7 @@ const PostEdit = ({ blogDetails, setAllPosts, setModalClose })=> {
 }
 
 
-const BlogList = () => {
+const BlogList = ({ selectedTags }) => {
 
 
     const [ open , setOpen ] = useState(false);
@@ -168,6 +172,7 @@ const BlogList = () => {
     const [ currentTotalCount, setCurrentTotalCount ] = useState(0);
     const [ listingMetadata, setListingMetadata ] = useState(0);
     const [ currentPage, setCurrentPage ] = useState(1);
+    const [tags, setTags] = useState([]);
 
     /**
      * Locaton Hook to get the current pathname
@@ -184,17 +189,25 @@ const BlogList = () => {
     
 
     useEffect(() => {
+        console.log("User Effect Called")
         const morePosts = async () => {
+            const inputData  = {
+                status: 'ACTIVE',
+                page: 1, 
+                limit: 10
+            }
+
+            if(selectedTags && Array.isArray(selectedTags) && selectedTags.length > 0) {
+                inputData.tags = selectedTags
+            }
+
             const response = await fetchMorePosts({
                 variables: {
-                    inputData: {
-                        status: 'ACTIVE',
-                        page: 1, 
-                        limit: 10
-                    }
+                    inputData: inputData
                 },
                 fetchPolicy: 'no-cache'
             });
+
             if( response?.data?.PostListing ) {
                 const { metadata, posts } = response.data.PostListing;
                 console.log("Posts: ", AllPosts);
@@ -216,27 +229,9 @@ const BlogList = () => {
             setListingMetadata(0);
             setCurrentPage(1);
         }
-    },[])
+    },[selectedTags])
 
-    // useEffect(() => {
-    //     if (postListingData && postListingData.PostListing.posts) {
-    //         setAllPosts((prevPosts) => [...prevPosts, ...postListingData.PostListing.posts]);
-
-    //         setCurrentTotalCount((prevValue) => {
-    //             return prevValue + postListingData.PostListing.posts.length;
-    //         });
-
-    //         setListingMetadata(postListingData?.PostListing?.metadata.total_count);
-    //     }
-    //     if (postListingError) {
-    //         makeToast("Error fetching blog posts", "error");
-    //         return;
-    //     }
-        
-    //     return () => {
-    //         setAllPosts([]);
-    //     }
-    // }, [ postListingData, postListingError]);
+    
     
 
     /**
@@ -261,7 +256,8 @@ const BlogList = () => {
                         title: contentTitle,
                         content: initialContent,
                         status: selectedStatus,
-                        short_preview_content: short_preview_content
+                        short_preview_content: short_preview_content,
+                        tags: tags
                     }
                 }
             });
@@ -338,9 +334,9 @@ const BlogList = () => {
                             <input type="text" onChange={(e) => setContentTitle(e.target.value)} value={contentTitle} className=' w-full outline-none ring-0 focus:ring-0 focus:outline-none border bg-transparent  p-2 rounded' placeholder='Content Title' />
                         </div>
                         
-                        {/* <div className='border rounded-md w-full my-5'>
-                            <MultiSelectDropdown/>
-                        </div> */}
+                        <div className='border rounded-md w-full my-5'>
+                            <MultiSelectDropdown setItems = {setTags}/>
+                        </div>
 
                         <div className= "w-full" >
                             <RichTextEditor
@@ -393,6 +389,7 @@ const BlogList = () => {
                                 {/* <p className=" p-2 text-white-600">{blog.content}</p> */}
                                 
                             </NavLink>
+                            <p className='ml-2 space-x-2'> { blog.tags.map(val=> val.title.charAt(0).toUpperCase() + val.title.slice(1)).join(", ")}</p>
                         </div>
                         <div className='prose text-white p-2 min-w-full' dangerouslySetInnerHTML={ { __html: blog?.short_preview_content ?? "" }}/>
 
