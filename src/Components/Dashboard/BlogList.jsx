@@ -77,7 +77,8 @@ const PostEdit = ({ blogDetails, setAllPosts, setModalClose })=> {
                 id: blogDetails.id,
                 title: contentTitle,
                 content: content,
-                status: selectedStatus
+                status: selectedStatus,
+                short_preview_content: short_preview_content
             };
             if(tagsOnEdit && Array.isArray(tagsOnEdit) && tagsOnEdit.length > 0 ) {
                 inputData.tags = tagsOnEdit;
