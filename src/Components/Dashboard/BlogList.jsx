@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import Modal from '../Modal.jsx';
 import RichTextEditor from '../RichTextEditor/Tiptap.jsx'; // Assuming you have a rich text editor component
-import { useLocation, NavLink } from "react-router-dom";
+import { useLocation, NavLink, useNavigate } from "react-router-dom";
 import MultiSelectDropdown from '../MultiselectDropDownWithCheckBox.jsx';
 import { gql, useMutation, useQuery, useLazyQuery } from '@apollo/client'; 
 import { makeToast } from '../../Helpers/index.js';
 import { useAuth } from '../../Hooks/index.js';
+import { FaExternalLinkAlt } from "react-icons/fa"
 
 const CREATE_BLOG_POST = gql`
     mutation Mutation($inputData: CreatePostInput) {
@@ -181,6 +182,7 @@ const BlogList = ({ selectedTags }) => {
 
 
     const [ listingStatus , setListingStatus ] = useState('ACTIVE');
+    const navigate = useNavigate();
 
     /**
      * Locaton Hook to get the current pathname
@@ -404,14 +406,16 @@ const BlogList = ({ selectedTags }) => {
             
             <div className="space-y-5">
                 {AllPosts.map((blog, index) => (
-                    <div className='text-white rounded-lg shadow-md border border-white p-2'>
-                        <div onClick={()=> console.log("HELLO")} key={index} className={`bg-[#3E403F] cursor-pointer rounded-lg shadow-md  min-w-[700px]`}>
-                            <NavLink to={`/blog/${blog.id}`} className="flex flex-col items-start justify-start">
+                    <div onClick={()=> {navigate(`/blog/${blog.id}`)}} className='text-white rounded-lg shadow-md border border-white p-2 cursor-pointer'>
+                        <div key={index} className={`bg-[#3E403F] cursor-pointer rounded-lg shadow-md  min-w-[700px]`}>
+                            <NavLink to={`/blog/${blog.id}`} className="flex items-start justify-between">
                                 <h3 className="p-2 text-xl text-white-600 font-semibold">{blog.title}</h3>
-                                {/* <p className=" p-2 text-white-600">{blog.content}</p> */}
                                 
+                                <span className='p-2'> <FaExternalLinkAlt /> </span>
                             </NavLink>
-                            <p className='ml-2 space-x-2'> { blog?.tags?.map(val=> val?.title?.charAt(0).toUpperCase() + val.title.slice(1)).join(", ")}</p>
+                            <div className='flex items-center justify-between'>
+                                <p className='ml-2 space-x-2'> { blog?.tags?.map(val=> val?.title?.charAt(0).toUpperCase() + val.title.slice(1)).join(", ")}</p> 
+                            </div>
                         </div>
                         <div className='prose text-white p-2 min-w-full' dangerouslySetInnerHTML={ { __html: blog?.short_preview_content ?? "" }}/>
 
