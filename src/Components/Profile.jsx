@@ -52,7 +52,7 @@ const Profile = ()=>{
                 const response = await fetchProfile({
                     fetchPolicy: 'no-cache',
                 });
-                console.log("Response from GraphQL:", response);
+                // console.log("Response from GraphQL:", response);
                 setProfileData(()=> response?.data?.GetProfile || null);
             }
             fetchData()

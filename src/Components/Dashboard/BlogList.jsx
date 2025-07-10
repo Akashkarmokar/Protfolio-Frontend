@@ -217,10 +217,10 @@ const BlogList = ({ selectedTags }) => {
 
             if( response?.data?.PostListing ) {
                 const { metadata, posts } = response.data.PostListing;
-                console.log("Posts: ", AllPosts);
+                // console.log("Posts: ", AllPosts);
                 setAllPosts([...posts]);
                 setCurrentTotalCount((prevValue) => {
-                    console.log("Prev Value: ", prevValue, "Posts Length: ", posts.length);
+                    // console.log("Prev Value: ", prevValue, "Posts Length: ", posts.length);
                     return prevValue + posts.length;
                 });
                 setListingMetadata(() => metadata.total_count);
@@ -310,7 +310,7 @@ const BlogList = ({ selectedTags }) => {
             const { metadata, posts } = response.data.PostListing;
             setAllPosts((prevPosts) => [...prevPosts, ...posts]);
             setCurrentTotalCount((prevValue) => {
-                console.log("Prev Value: ", prevValue, "Posts Length: ", posts.length);
+                // console.log("Prev Value: ", prevValue, "Posts Length: ", posts.length);
                 return prevValue + posts.length;
             });
             setListingMetadata(() => metadata.total_count);
