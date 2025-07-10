@@ -417,6 +417,7 @@ const BlogList = ({ selectedTags }) => {
                                 <p className='ml-2 space-x-2'> { blog?.tags?.map(val=> val?.title?.charAt(0).toUpperCase() + val.title.slice(1)).join(", ")}</p> 
                             </div>
                         </div>
+                        
                         <div className='prose text-white p-2 min-w-full' dangerouslySetInnerHTML={ { __html: blog?.short_preview_content ?? "" }}/>
 
                         {/* <div className='prose text-white p-2 min-w-full' dangerouslySetInnerHTML={ { __html: blog.content }}/> */}
