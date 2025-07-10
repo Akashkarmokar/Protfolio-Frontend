@@ -44,7 +44,7 @@ const App = ()=> {
                     }
                   }
                 });
-                console.log("Response from Authentication API:", response);
+                // console.log("Response from Authentication API:", response);
                 if (response.data && response.data.Authentication) {
                   const { role } = response.data.Authentication;
                   setUserInfo((preValue) => ({ ...preValue, role: role }));
