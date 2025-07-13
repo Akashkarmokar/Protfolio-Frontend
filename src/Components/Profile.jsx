@@ -68,7 +68,7 @@ const Profile = ()=>{
     
 
 
-
+    console.log(profileData)
     return (
         <div className=' main-container flex items-center justify-center '>
             <div className='h-60 w-60 rounded-full overflow-hidden ring-2 ring-[#ffffff]'>
@@ -80,6 +80,10 @@ const Profile = ()=>{
                 <div className='text-center md:text-left'>
                     <p>{bio_info.note}</p>
                 </div>
+                <div className='text-center md:text-left'>
+                    <p>{profileData?.email}</p>
+                </div>
+
                 <div className='flex flex-row gap-3 justify-center mt-2 md:justify-start'>
                     <NavLink to={"https://www.linkedin.com/in/akashcsemu/"} target='_blank'><FaLinkedin className='text-xl'/></NavLink>
                     <NavLink to={"https://github.com/Akashkarmokar"} target='_blank'><FaGithub className='text-xl'/></NavLink>
