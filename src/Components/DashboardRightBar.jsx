@@ -1,5 +1,9 @@
 
-import { BlogList, ProfileSetup } from '../Components'
+import {
+    BlogList,
+    ContactList,
+    ProfileSetup
+} from '../Components'
 
 const DashboardRightBar = ({ props_data }) => {
     const { selectedMenu } = props_data;
@@ -13,6 +17,9 @@ const DashboardRightBar = ({ props_data }) => {
         }
         {
             selectedMenu === 'blogs' ? (<div>{ <BlogList/>}</div>) : null
+        }
+        {
+            selectedMenu === 'contacts' ? (<div>{ <ContactList/>}</div>) : null
         }
     </div>
   );
