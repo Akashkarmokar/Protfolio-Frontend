@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useLocation, NavLink } from 'react-router-dom'
+import {useLocation, NavLink, useNavigate} from 'react-router-dom'
 import { FaLinkedin, FaGithub, FaYoutube} from 'react-icons/fa6'
 import { PiDevToLogoLight } from 'react-icons/pi'
 import { callApi } from '../Helpers';
@@ -30,6 +30,7 @@ const Profile = ()=>{
     })
 
     const [ profileData, setProfileData ] = useState(null);
+    const navigate = useNavigate();
 
     const GetProfile = gql`
         query GetProfile {
@@ -68,7 +69,7 @@ const Profile = ()=>{
     
 
 
-
+    console.log(profileData)
     return (
         <div className=' main-container flex items-center justify-center '>
             <div className='h-60 w-60 rounded-full overflow-hidden ring-2 ring-[#ffffff]'>
@@ -76,10 +77,14 @@ const Profile = ()=>{
             </div>
             <div className='flex flex-col justify-item-stretch p-5'>
                 <p className='text-center md:text-left'><span className='text-[#00DF9A]'> as </span><span className='font-bold text-3xl'>{ profileData?.name }</span></p>
-                <p className='text-center md:text-left'>{profileData?.designation} @ {profileData?.company}</p>
+                <p className='text-center md:text-left'>{profileData?.designation} @  <span onClick={()=> { navigate("/experiences")}} className="underline cursor-pointer">{profileData?.company}</span></p>
                 <div className='text-center md:text-left'>
                     <p>{bio_info.note}</p>
                 </div>
+                <div className='text-center md:text-left'>
+                    <p>{profileData?.email}</p>
+                </div>
+
                 <div className='flex flex-row gap-3 justify-center mt-2 md:justify-start'>
                     <NavLink to={"https://www.linkedin.com/in/akashcsemu/"} target='_blank'><FaLinkedin className='text-xl'/></NavLink>
                     <NavLink to={"https://github.com/Akashkarmokar"} target='_blank'><FaGithub className='text-xl'/></NavLink>
