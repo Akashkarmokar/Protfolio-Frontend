@@ -2,7 +2,7 @@
 
 Welcome to my personal portfolio — a fully responsive and modern web app built to showcase my skills, projects, and experiences. Built using React, Tailwind CSS, and deployed via Vercel.
 
-Live Demo 👉 [akbrainbyte.vercel.app](https://ak-brain-byte.vercel.app)
+Live Demo 👉 [akbrainbyte.vercel.app](https://akbrainbyte.vercel.app/)
 
 ---
 
