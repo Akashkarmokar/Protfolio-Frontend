@@ -1,6 +1,16 @@
 import './index.css'
 import {Routes,Route} from 'react-router-dom'
-import { About,Dashboard,Signin,Signup,NotFound, Experiences, BlogDetails, AuthCallback} from './Pages'
+import {
+    About,
+    AuthCallback,
+    BlogDetails,
+    Contact,
+    Dashboard,
+    Experiences,
+    NotFound,
+    Signin,
+    Signup,
+} from './Pages'
 import { Navbar,PrivateOutlet,PrivateOutletRestriction } from './Components'
 import { AuthContext } from './Context'
 import { ToastContainer } from 'react-toastify'
@@ -57,11 +67,11 @@ const App = ()=> {
           };
           getAuthentication();
         }
-        
+
       }catch (error) {
         console.error("Error in useEffect:", error);
       }
-      
+
     }, [])
 
     const UserInfoHandler = ()=> {
@@ -82,6 +92,7 @@ const App = ()=> {
               <Route path='/experiences' element={<Experiences/>} />
               <Route path='/blog/:blog_id' element={<BlogDetails/>} />
               <Route path='/auth' element={<AuthCallback/>} />
+                <Route path = "/contact" element={<Contact/>}/>
               {/* <Route path='/miscellaneous' element={<Miscellaneous/>} />
               <Route path='/projects' element={<Projects/>} />
               <Route path='/blog/:id' element={<BlogDetails/>}/> */}
@@ -102,7 +113,7 @@ const App = ()=> {
             <ToastContainer/>
           </div>
         </AuthContext.Provider>
-      
+
     )
 }
 

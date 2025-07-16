@@ -40,10 +40,24 @@ const Navbar = ()=>{
                                         || 
                                     (
                                         pathname.split("/").length > 2 && pathname.split("/")[1]
-                                    ) === "blog" 
+                                    ) === "experiences"
                                 )
                                 ? <h1 className="text-center text-[#00DF9A]">^</h1>
                                 : null 
+                            }
+                        </div>
+                        <div className="flex flex-col">
+                            <NavLink to="/contact" className="mx-1">Contact</NavLink>
+                            {
+                                (
+                                    pathname === '/contact'
+                                    ||
+                                    (
+                                        pathname.split("/")[1]
+                                    ) === "contact"
+                                )
+                                    ? <h1 className="text-center text-[#00DF9A]">^</h1>
+                                    : null
                             }
                         </div>
                         {
