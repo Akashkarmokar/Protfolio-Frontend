@@ -418,7 +418,7 @@ const BlogList = ({ selectedTags }) => {
                             </div>
                         </div>
                         
-                        <div className='prose text-white p-2 min-w-full' dangerouslySetInnerHTML={ { __html: blog?.short_preview_content ?? "" }}/>
+                        <div className='prose text-white p-2 min-w-full' dangerouslySetInnerHTML={ { __html: blog?.short_preview_content.substring(0,450) ?? "" }}/>
 
                         {/* <div className='prose text-white p-2 min-w-full' dangerouslySetInnerHTML={ { __html: blog.content }}/> */}
                         {
